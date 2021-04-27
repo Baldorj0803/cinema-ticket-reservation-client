@@ -1,0 +1,32 @@
+.OrderMovie {
+	display: flex;
+	flex-direction: row;
+}
+
+.Left {
+	width: 30%;
+	padding: 10px;
+	display: flex;
+	justify-content: center;
+}
+.Left img {
+	height: 300px;
+	width: 250px;
+	border-radius: 5px;
+}
+.Right > h2 {
+	text-align: center;
+}
+
+.Footer {
+	display: flex;
+	justify-content: flex-end;
+	padding: 15px;
+}
+.Right div {
+	margin-top: 5px;
+	height: 50px;
+}
+.Right {
+	margin-left: 50px;
+}

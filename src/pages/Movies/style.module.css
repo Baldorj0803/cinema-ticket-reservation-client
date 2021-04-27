@@ -1,0 +1,87 @@
+.Movies {
+	display: flex;
+	flex-direction: column;
+	background: linear-gradient(to right, #c31432, #240b36);
+	padding-top: 80px;
+	/* min-height: 620px; */
+	min-height: 100vh;
+}
+.Cat {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	overflow-x: auto;
+	padding-left: 50px;
+}
+.Cat button {
+	height: 40px;
+	margin-left: 50px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	cursor: pointer;
+}
+.Cat button > div {
+	margin-left: 5px;
+}
+.Movie {
+	display: flex;
+	flex-direction: column;
+}
+
+.Movie > div {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.Movie > button {
+	width: 80px;
+	margin-left: 30px;
+	cursor: pointer;
+	margin: 0 auto;
+}
+
+.Search {
+	border: 1px olid rgb(163, 181, 255);
+	padding-top: 20px;
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 50px;
+}
+.Search input {
+	border-radius: 5px 0 0 5px;
+	border: none;
+	opacity: 0.8;
+}
+.Search div {
+	border-radius: 0 5px 5px 0;
+	border: none;
+	background-color: rgb(0, 154, 201);
+	padding: 3px 3px 1px 3px;
+	cursor: pointer;
+}
+.Search div:hover {
+	background-color: rgb(27, 86, 104);
+}
+
+.category {
+	border: none;
+	padding: 0 20px;
+	border-radius: 5px;
+	background-color: rgb(74, 198, 255);
+}
+.category:hover {
+	background-color: rgb(58, 114, 139);
+	color: white;
+}
+
+.Category {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+	width: 100%;
+}

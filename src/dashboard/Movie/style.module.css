@@ -1,0 +1,37 @@
+.Movie {
+	/* background-color: gray; */
+	height: 500px;
+	overflow-y: auto;
+}
+
+.Header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid grey;
+	padding-bottom: 10px;
+}
+
+.Table {
+	margin-top: 10px;
+	height: 380px;
+	max-height: 380px;
+	overflow-x: auto;
+}
+
+.Footer {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	padding-top: 5px;
+}
+.Footer button {
+	background-color: #7dcea0;
+	border: none;
+	height: 30px;
+	width: 80px;
+	border-radius: 5px;
+	margin-left: 10px;
+	cursor: pointer;
+}

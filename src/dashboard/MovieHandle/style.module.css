@@ -1,0 +1,20 @@
+.Form {
+	font-family: sans-serif;
+	text-align: center;
+
+	display: flex;
+	flex-direction: column;
+	width: 300px;
+	background-color: rgb(138, 212, 255);
+	padding: 20px;
+}
+.input {
+	height: 30px;
+	border: 1px solid rgb(73, 112, 197);
+	margin-top: 5px;
+	border-radius: 5px;
+}
+
+.input ::placeholder {
+	color: black;
+}

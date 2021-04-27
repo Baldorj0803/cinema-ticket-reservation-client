@@ -1,0 +1,40 @@
+.Main {
+	display: flex;
+	/* margin-top: 120px; */
+	flex-direction: row;
+	width: 100%;
+	min-height: 590px;
+	height: 590px;
+	margin: auto;
+	padding-top: 80px;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.Dashboard {
+	/* border: 1px solid orange; */
+	width: 90%;
+	display: flex;
+	flex-direction: row;
+	height: 500px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.Left {
+	width: 20%;
+}
+.Left div {
+	background-color: #aeb6bf;
+	height: 50px;
+	border-bottom: 3px solid gainsboro;
+	display: flex;
+	cursor: pointer;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 20px;
+}
+.Right {
+	width: 80%;
+	background-color: #d6dbdf;
+	padding: 20px;
+}

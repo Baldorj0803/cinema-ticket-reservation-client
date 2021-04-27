@@ -1,0 +1,37 @@
+.CommentDetial {
+	display: flex;
+	flex-direction: row;
+	margin-top: 10px;
+}
+
+.Main {
+	font-size: 13px;
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(75, 75, 75);
+	padding: 5px;
+	border-radius: 5px;
+	margin-left: 0 5px;
+	flex-wrap: wrap;
+	max-width: 150px;
+	min-width: 50px;
+}
+.Com {
+	margin-top: 5px;
+}
+.Com > p {
+	max-width: 150px;
+	white-space: normal;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	hyphens: auto;
+	margin: 0px;
+}
+.time {
+	color: rgb(168, 168, 168);
+	font-size: 7px;
+}
+
+.username {
+	font-weight: bold;
+}

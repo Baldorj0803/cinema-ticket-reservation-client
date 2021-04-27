@@ -1,0 +1,24 @@
+.Movie {
+	display: flex;
+	flex-direction: row;
+	background: linear-gradient(to right, #c31432, #240b36);
+
+	min-height: 625px;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding-top: 80px;
+	min-height: 100vh;
+}
+
+.Movie > div {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 0 auto;
+	justify-content: center;
+}
+.Movie > button {
+	width: 80px;
+	margin: 0 auto;
+}
