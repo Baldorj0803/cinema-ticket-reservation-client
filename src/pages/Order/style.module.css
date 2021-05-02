@@ -64,6 +64,6 @@
 	margin-bottom: 20px;
 }
 .right > div {
-	margin-top: 5px;
-	margin-left: 10px;
+	border-bottom: 1px solid gray;
+	padding: 5px 0 5px 5px;
 }

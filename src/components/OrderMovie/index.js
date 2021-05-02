@@ -3,6 +3,7 @@ import css from "./style.module.css";
 import { connect } from "react-redux";
 import * as actions from "../../redux/actions/orderAction";
 import Button from "@material-ui/core/Button";
+import { HOST } from "../../config";
 
 const OrderMovie = (props) => {
 	return (
@@ -10,9 +11,7 @@ const OrderMovie = (props) => {
 			{props.movie && (
 				<div className={css.OrderMovie}>
 					<div className={css.Left}>
-						<img
-							src={`http://localhost:8000/static/upload/${props.movie.photo}`}
-						/>
+						<img src={`${HOST}/static/upload/${props.movie.photo}`} />
 					</div>
 					<div className={css.Right}>
 						<h2>{props.movie.movName}</h2>
@@ -44,7 +43,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changePage: (page) => dispatch(actions.changePage(page)),
-		// loadSchedule: (schId) => dispatch(actions.loadSchedule(schId)),
 	};
 };
 

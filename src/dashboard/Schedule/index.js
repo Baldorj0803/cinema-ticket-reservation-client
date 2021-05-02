@@ -13,6 +13,7 @@ import UpdateIcon from "@material-ui/icons/Update";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import MyModal from "../MyModal";
+import { API } from "../../config";
 
 const Schedule = () => {
 	const { enqueueSnackbar } = useSnackbar();
@@ -27,7 +28,7 @@ const Schedule = () => {
 	const loadschedules = () => {
 		let token = localStorage.getItem("t");
 		axios
-			.get(`http://localhost:8000/api/v1/schedules?limit=10&page=${page}`, {
+			.get(`${API}/schedules?limit=10&page=${page}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -47,7 +48,7 @@ const Schedule = () => {
 	const deleteItem = (id) => {
 		let token = localStorage.getItem("t");
 		axios
-			.delete(`http://localhost:8000/api/v1/schedules/${id}`, {
+			.delete(`${API}/schedules/${id}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},

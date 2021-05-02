@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import css from "./style.module.css";
 import axios from "axios";
 import CommentDetial from "../CommentDetial";
+import { API } from "../../config";
 const Comment = (props) => {
 	const [comment, setComment] = useState("");
 	const [comments, setComments] = useState([]);
@@ -24,9 +25,7 @@ const Comment = (props) => {
 	const loadComment = () => {
 		setLoading(true);
 		axios
-			.get(
-				`http://localhost:8000/api/v1/comments/movie/${movieId}?limit=5&page=${page}`
-			)
+			.get(`${API}/comments/movie/${movieId}?limit=5&page=${page}`)
 			.then((res) => {
 				setComments((prevState) => [...prevState, ...res.data.data]);
 				setpagination(res.data.pagination);
@@ -49,7 +48,7 @@ const Comment = (props) => {
 
 		axios
 			.post(
-				`http://localhost:8000/api/v1/comments`,
+				`${API}/comments`,
 				{
 					movieId: movieId,
 					commentDesc: comment,

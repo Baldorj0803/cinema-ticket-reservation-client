@@ -13,6 +13,7 @@ import UpdateIcon from "@material-ui/icons/Update";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import MyModal from "../MyModal";
+import { API } from "../../config";
 
 const Movie = () => {
 	const { enqueueSnackbar } = useSnackbar();
@@ -28,9 +29,7 @@ const Movie = () => {
 	const loadMovies = () => {
 		setLoading(true);
 		axios
-			.get(
-				`http://localhost:8000/api/v1/movies?limit=10&sort=movName&page=${page}`
-			)
+			.get(`${API}/movies?limit=10&sort=movName&page=${page}`)
 			.then((res) => {
 				setLoading(false);
 				setMovies(res.data.data);
@@ -48,7 +47,7 @@ const Movie = () => {
 	const deleteItem = (id) => {
 		let token = localStorage.getItem("t");
 		axios
-			.delete(`http://localhost:8000/api/v1/movies/${id}`, {
+			.delete(`${API}/movies/${id}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},

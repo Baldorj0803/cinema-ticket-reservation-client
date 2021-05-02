@@ -5,7 +5,7 @@ import axios from "axios";
 import Spinner from "../../components/Spinner";
 import SearchIcon from "@material-ui/icons/Search";
 import { Button } from "@material-ui/core";
-
+import { API } from "../../config";
 const Movies = (props) => {
 	const [page, setPage] = useState(1);
 	const [item, setItem] = useState([]);
@@ -30,7 +30,7 @@ const Movies = (props) => {
 	}, [checked]);
 
 	const loadMovies = (type) => {
-		let query = `http://localhost:8000/api/v1/movies/playing`;
+		let query = `${API}/movies/playing`;
 
 		if (type === "search" && search) {
 			query = query + "?limit=20&page=1&search=" + search;
@@ -54,7 +54,6 @@ const Movies = (props) => {
 			url: query,
 		})
 			.then((res) => {
-				console.log("type", type, "page", page);
 				type === "search" || type === "category" || page === 1
 					? setItem(res.data.data)
 					: setItem([...item, ...res.data.data]);
@@ -79,7 +78,7 @@ const Movies = (props) => {
 	const loadCategories = () => {
 		axios({
 			method: "get",
-			url: `http://localhost:8000/api/v1/categories`,
+			url: `${API}/categories`,
 		})
 			.then((res) => {
 				setCategories(res.data.data);
@@ -119,11 +118,16 @@ const Movies = (props) => {
 	return (
 		<div className={css.Movies}>
 			<div className={css.Search}>
-				<input onChange={(e) => handleChange(e)} placeholder="Хайлт хийх ..." />
-				<div onClick={handleSubmit}>
+				<input
+					type="text"
+					onChange={(e) => handleChange(e)}
+					placeholder="Хайлт хийх ..."
+				/>
+				<button onClick={handleSubmit}>
 					<SearchIcon />
-				</div>
+				</button>
 			</div>
+			\
 			<div className={css.Cat}>
 				<div className={css.Category}>
 					{categories.length > 0 && (

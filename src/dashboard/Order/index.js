@@ -1,4 +1,3 @@
-import { Button } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import css from "./style.module.css";
 import Paper from "@material-ui/core/Paper";
@@ -9,6 +8,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import axios from "axios";
+import { API } from "../../config";
 
 const Order = () => {
 	const [orders, setOrders] = useState([]);
@@ -24,7 +24,7 @@ const Order = () => {
 		setLoading(true);
 		let token = localStorage.getItem("t");
 		axios
-			.get(`http://localhost:8000/api/v1/orders?limit=10&page=${page}`, {
+			.get(`${API}/orders?limit=10&page=${page}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},

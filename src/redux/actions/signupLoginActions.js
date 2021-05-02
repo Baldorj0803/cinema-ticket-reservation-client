@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API } from "../../config";
 
 export const signUp = (name, email, password) => {
 	return function (dispatch) {
@@ -15,7 +16,7 @@ export const signUp = (name, email, password) => {
 			Accept: "application/json",
 		};
 		axios
-			.post("http://localhost:8000/api/v1/users", data, { headers })
+			.post(`${API}/users`, data, { headers })
 			.then((res) => {
 				//locas storage ruuu hadgalah
 				const token = res.data.token;
@@ -61,7 +62,7 @@ export const login = (email, password) => {
 			Accept: "application/json",
 		};
 		axios
-			.post("http://localhost:8000/api/v1/login", data, { headers })
+			.post(`${API}/login`, data, { headers })
 			.then((res) => {
 				//locas storage ruuu hadgalah
 				const token = res.data.token;

@@ -3,9 +3,9 @@ import css from "./style.module.css";
 import * as actions from "../../redux/actions/orderAction";
 import { connect } from "react-redux";
 import axios from "axios";
-
+import { API } from "../../config";
 import Button from "@material-ui/core/Button";
-import { useSnackbar } from "notistack";
+import { withSnackbar } from "notistack";
 import { withRouter } from "react-router-dom";
 
 class Ticket extends Component {
@@ -47,16 +47,21 @@ class Ticket extends Component {
 
 		if (seconds == 0) {
 			clearInterval(this.timer);
-			alert("Хугацаа дууссан тул устгагдлаа");
+			this.props.enqueueSnackbar("Хугацаа дууссан тул захиалга цуцлагдлаа", {
+				variant: "warning",
+			});
 		}
 	}
 
 	componentWillUnmount() {
 		if (!this.state.success) {
+			this.props.enqueueSnackbar("Захиалга цуцлагдлаа", {
+				variant: "warning",
+			});
 			clearInterval(this.timer);
 			let token = localStorage.getItem("t");
 			axios
-				.delete(`http://localhost:8000/api/v1/orders/${this.props.orderId}`, {
+				.delete(`${API}1/orders/${this.props.orderId}`, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
@@ -75,10 +80,9 @@ class Ticket extends Component {
 		this.setState({ loading: true });
 		axios
 			.put(
-				`http://localhost:8000/api/v1/orders/${this.props.orderId}`,
+				`${API}1/orders/${this.props.orderId}`,
 				{
 					scheduleId: this.props.scheduleId,
-					email: "user@gmail.com",
 				},
 				{
 					headers: {
@@ -87,7 +91,9 @@ class Ticket extends Component {
 				}
 			)
 			.then((res) => {
-				// enqueueSnackbar("Амжилттай захиалагдлаа", { variant: "success" });
+				this.props.enqueueSnackbar("Амжилттай захиалагдлаа", {
+					variant: "success",
+				});
 				this.setState({ loading: false });
 				this.state.success = true;
 				clearInterval(this.timer);
@@ -95,8 +101,9 @@ class Ticket extends Component {
 			})
 			.catch((err) => {
 				this.setState({ loading: false });
-				console.log(err);
-				console.log(err.response);
+				this.props.enqueueSnackbar(err.response, {
+					variant: "error",
+				});
 			});
 	}
 
@@ -152,4 +159,6 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Ticket));
+export default withRouter(
+	withSnackbar(connect(mapStateToProps, mapDispatchToProps)(Ticket))
+);

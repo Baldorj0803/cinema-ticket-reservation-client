@@ -7,13 +7,13 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import YouTubeIcon from "@material-ui/icons/YouTube";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 import PhoneIcon from "@material-ui/icons/Phone";
-import { makeStyles } from "@material-ui/core/styles";
+import { API } from "../../config";
 
 const Footer = () => {
 	const [branches, setBranches] = useState([]);
 	useEffect(() => {
 		axios
-			.get(`http://localhost:8000/api/v1/branches`)
+			.get(`${API}/branches`)
 			.then((res) => {
 				setBranches(res.data.data);
 			})

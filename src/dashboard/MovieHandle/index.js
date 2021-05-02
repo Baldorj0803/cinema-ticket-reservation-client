@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import css from "./style.module.css";
 import axios from "axios";
+import { API } from "../../config";
 
 const AddMovie = (props) => {
 	const [categories, setCategories] = useState([]);
@@ -18,7 +19,7 @@ const AddMovie = (props) => {
 	useEffect(() => {
 		setForm({ ...form, formData: new FormData(), ...props.movie });
 		axios
-			.get(`http://localhost:8000/api/v1/categories`)
+			.get(`${API}/categories`)
 			.then((res) => {
 				setCategories(res.data.data);
 			})
@@ -39,7 +40,7 @@ const AddMovie = (props) => {
 		let token = localStorage.getItem("t");
 
 		axios
-			.post(`http://localhost:8000/api/v1/movies`, form.formData, {
+			.post(`${API}/movies`, form.formData, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 					"Content-type": "multipart/form-data",
@@ -62,16 +63,12 @@ const AddMovie = (props) => {
 		console.log("pud duudpaa");
 
 		axios
-			.put(
-				`http://localhost:8000/api/v1/movies/${props.movie._id}`,
-				form.formData,
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-						"Content-type": "multipart/form-data",
-					},
-				}
-			)
+			.put(`${API}/movies/${props.movie._id}`, form.formData, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					"Content-type": "multipart/form-data",
+				},
+			})
 			.then((res) => {
 				console.log(res.data);
 				props.alert("Амжилттай", { variant: "success" });

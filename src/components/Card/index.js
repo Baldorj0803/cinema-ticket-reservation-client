@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 import css from "./style.module.css";
 import * as actions from "../../redux/actions/orderAction";
-
+import { HOST } from "../../config";
+import { useSnackbar } from "notistack";
 const Card = (props) => {
-	// console.log(props.movie);
 	const {
 		_id,
 		photo,
@@ -15,9 +15,10 @@ const Card = (props) => {
 		// duration,
 		// movAuthor,
 		// movDesc,
-		movGenre,
+		// movGenre,
 		// movName,
 	} = props.movie;
+	const { enqueueSnackbar } = useSnackbar();
 
 	const history = useHistory();
 	const handleRoute = (id) => {
@@ -25,7 +26,9 @@ const Card = (props) => {
 			props.addScheduleId(id);
 			history.replace("/order");
 		} else {
-			history.replace("/login");
+			enqueueSnackbar(`Та нэвтрэнэ үү `, {
+				variant: "info",
+			});
 		}
 	};
 
@@ -56,12 +59,9 @@ const Card = (props) => {
 		<div
 			className={css.Card}
 			style={{
-				backgroundImage: photo
-					? `url(http://localhost:8000/static/upload/${photo})`
-					: "none",
+				backgroundImage: photo ? `url(${HOST}static/upload/${photo})` : "none",
 			}}
 		>
-			{/* <div className={css.test} style={{ opacity: `${booking}` }}></div> */}
 			<div className={css.Schedule} style={{ display: `${booking}` }}>
 				{schedules &&
 					schedules.map((schedule, i) => {

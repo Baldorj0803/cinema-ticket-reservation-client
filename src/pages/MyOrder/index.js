@@ -8,13 +8,14 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import { API } from "../../config";
 
 const MyOrder = () => {
 	const [orders, setOrders] = useState([]);
 	useEffect(() => {
 		let token = localStorage.getItem("t");
 		axios
-			.get("http://localhost:8000/api/v1/orders/user?sort=date", {
+			.get("${API}/orders/user?sort=date", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},

@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { useSnackbar } from "notistack";
+import { HOST } from "../../config";
 
 const SeatCount = (props) => {
 	const [totalPrice, settotalPrice] = useState(0);
@@ -23,9 +24,7 @@ const SeatCount = (props) => {
 			<div className={css.Left}>
 				{props.movie && (
 					<div className={css.Movie}>
-						<img
-							src={`http://localhost:8000/static/upload/${props.movie.photo}`}
-						/>
+						<img src={`${HOST}static/upload/${props.movie.photo}`} />
 					</div>
 				)}
 			</div>

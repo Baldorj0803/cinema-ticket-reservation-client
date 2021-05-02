@@ -5,10 +5,13 @@ import { connect } from "react-redux";
 import axios from "axios";
 import Spinner from "../Spinner";
 import Button from "@material-ui/core/Button";
-const Seats = (props) => {
-	let seats = [];
-	const [ordered, setOrdered] = useState([]);
+import { useSnackbar } from "notistack";
+import { API } from "../../config";
 
+const Seats = (props) => {
+	const [seats, setSeats] = useState([]);
+	const [ordered, setOrdered] = useState([]);
+	const { enqueueSnackbar } = useSnackbar();
 	const [loading, setloading] = useState(false);
 	const [loadingOrder, setloadingOrder] = useState(false);
 
@@ -22,7 +25,7 @@ const Seats = (props) => {
 			setloading(true);
 			axios
 				.post(
-					"http://localhost:8000/api/v1/orders",
+					`${API}/orders`,
 					{
 						scheduleId: props.scheduleId,
 						seats: seats,
@@ -38,14 +41,11 @@ const Seats = (props) => {
 				.then((res) => {
 					props.addOrderId(res.data.data._id);
 					setloading(false);
+					enqueueSnackbar("Амжилттай Сонгогдлоо", { variant: "success" });
 					props.changePage(3);
 				})
 				.catch((err) => {
-					// setError(err.response);
-					alert(err.response.data.error);
-					console.log(err.response.data.error);
 					setloading(false);
-					seats = [];
 					loadOrder();
 				});
 		}
@@ -56,33 +56,59 @@ const Seats = (props) => {
 		let seat = val.value.split("-");
 		let r = parseInt(seat[0]);
 		let c = parseInt(seat[1]);
+
 		if (e.target.style.backgroundColor === "rgb(68, 68, 81)") {
 			if (seats.length === totalSeat) {
 				alert("Дахин сонгох боломжгүй" + seats.length + "-" + totalSeat);
 			} else {
-				seats.push({ row: r, column: c });
+				setSeats((prevState) => [...prevState, { row: r, column: c }]);
 				e.target.style.backgroundColor = "rgb(137, 255, 77)";
 			}
 		} else {
 			e.target.style.backgroundColor = "rgb(68, 68, 81)";
-			seats = seats.filter((seat) => seat.row !== r || seat.column !== c);
+			let st = seats.filter((seat) => seat.row !== r || seat.column !== c);
+			setSeats([...st]);
 		}
-		// console.log(val.value);
-		console.log(seats);
 	};
+
+	useEffect(() => {
+		let duplicate = "",
+			notDuplicate = [];
+		if (seats.length > 0 && ordered.length > 0) {
+			seats.map((seat) => {
+				let idx = 0; //Herew ene utga oorchlogdwol dawhatssan
+				ordered.map((order) => {
+					if (order.row === seat.row && order.column === seat.column) {
+						duplicate = duplicate + order.row + "-" + order.column + " ";
+						++idx;
+					}
+				});
+				if (idx === 0) notDuplicate.push(seat);
+			});
+			setSeats([...notDuplicate]);
+			if (duplicate !== "")
+				enqueueSnackbar(duplicate + " Суудлууд давхцаж байна", {
+					variant: "error",
+				});
+		}
+	}, [ordered]);
 	const loadOrder = () => {
 		setloadingOrder(true);
 		axios({
 			method: "get",
-			url: `http://localhost:8000/api/v1/schedules/${props.scheduleId}`,
+			url: `${API}/schedules/${props.scheduleId}`,
 		})
 			.then((res) => {
+				let orderdCall = [];
 				{
 					res.data.data.orders.length > 0 &&
 						res.data.data.orders.map((order) =>
-							setOrdered((prevState) => [...prevState, ...order.seats])
+							orderdCall.push(...order.seats)
 						);
 				}
+				console.log(orderdCall);
+				setOrdered([...orderdCall]);
+
 				setloadingOrder(false);
 			})
 			.catch((err) => {
@@ -96,7 +122,6 @@ const Seats = (props) => {
 
 	return (
 		<div>
-			{/* <div>{error && <div style={{ color: "red" }}>{error}</div>}</div> */}
 			<div className={css.Hall}>
 				<div className={css.left}>
 					<div>
@@ -113,12 +138,17 @@ const Seats = (props) => {
 										let c = [];
 										for (let j = 0; j < props.column; j++) {
 											let val = i + 1 + "-" + (j + 1);
-											let color = "#444451";
+											let color = "rgb(68, 68, 81)";
 											let disable = false;
 											ordered.map((order) => {
 												if (order.row === i + 1 && order.column === j + 1) {
 													color = "#FF4848 ";
 													disable = true;
+												}
+											});
+											seats.map((seat) => {
+												if (seat.row === i + 1 && seat.column === j + 1) {
+													color = "rgb(137, 255, 77)";
 												}
 											});
 											c.push(
@@ -128,7 +158,6 @@ const Seats = (props) => {
 													value={val}
 													disabled={disable}
 													style={{ backgroundColor: color }}
-													// onClick={() => handleSeat(j, i)}
 													onClick={handleS}
 												/>
 											);

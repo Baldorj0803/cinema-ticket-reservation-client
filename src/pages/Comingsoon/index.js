@@ -4,6 +4,7 @@ import css from "./style.module.css";
 import axios from "axios";
 import Spinner from "../../components/Spinner";
 import { Button } from "@material-ui/core";
+import { API } from "../../config";
 const Comingsoon = () => {
 	const [page, setPage] = useState(1);
 	const [item, setItem] = useState([]);
@@ -17,7 +18,7 @@ const Comingsoon = () => {
 	const loadMovies = () => {
 		axios({
 			method: "get",
-			url: `http://localhost:8000/api/v1/movies/coming-soon?limit=4&page=${page}`,
+			url: `${API}/movies/coming-soon?limit=4&page=${page}`,
 		})
 			.then((res) => {
 				setItem([...item, ...res.data.data]);
@@ -42,7 +43,7 @@ const Comingsoon = () => {
 	const loadCategories = () => {
 		axios({
 			method: "get",
-			url: `http://localhost:8000/api/v1/categories`,
+			url: `${API}/categories`,
 		})
 			.then((res) => {
 				setCategories(res.data.data);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import css from "./style.module.css";
 import axios from "axios";
+import { API } from "../../config";
 
 const AddMovie = (props) => {
 	const [movies, setMovies] = useState([]);
@@ -16,7 +17,7 @@ const AddMovie = (props) => {
 	useEffect(() => {
 		setForm({ ...form, formData: new FormData(), ...props.schedule });
 		axios
-			.get(`http://localhost:8000/api/v1/movies?select=movName`)
+			.get(`${API}/movies?limit=30&select=movName`)
 			.then((res) => {
 				setMovies(res.data.data);
 			})
@@ -24,7 +25,7 @@ const AddMovie = (props) => {
 				console.log(err.response.data.error);
 			});
 		axios
-			.get(`http://localhost:8000/api/v1/halls`)
+			.get(`${API}/halls`)
 			.then((res) => {
 				setHalls(res.data.data);
 			})
@@ -52,7 +53,7 @@ const AddMovie = (props) => {
 
 		axios
 			.post(
-				`http://localhost:8000/api/v1/schedules`,
+				`${API}/schedules`,
 				{
 					hallId: form.hallId,
 					movieId: form.movieId,
@@ -82,7 +83,7 @@ const AddMovie = (props) => {
 
 		axios
 			.put(
-				`http://localhost:8000/api/v1/schedules/${props.schedule._id}`,
+				`${API}/schedules/${props.schedule._id}`,
 
 				{
 					hallId: form.hallId,

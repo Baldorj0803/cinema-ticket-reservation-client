@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API } from "../../config";
 
 export const addScheduleId = (scheduleId) => {
 	return {
@@ -13,7 +14,7 @@ export const loadSchedule = (id) => {
 
 		axios({
 			method: "get",
-			url: `http://localhost:8000/api/v1/schedules/${id}`,
+			url: `${API}/schedules/${id}`,
 		})
 			.then((res) => {
 				console.log("tatsan schedule", res.data.data);

@@ -5,6 +5,7 @@ import { useParams, useHistory } from "react-router-dom";
 import * as actions from "../../redux/actions/orderAction";
 import { connect } from "react-redux";
 import Comment from "../Comment";
+import { API, HOST } from "../../config";
 
 const MovieDetial = (props) => {
 	const [movie, setMovie] = useState({ data: {}, loading: false, error: "" });
@@ -18,7 +19,7 @@ const MovieDetial = (props) => {
 			loading: true,
 		}));
 		axios
-			.get(`http://localhost:8000/api/v1/movies/${movieId}`)
+			.get(`${API}/movies/${movieId}`)
 			.then((movie) => {
 				setMovie((prevState) => ({
 					...prevState,
@@ -84,16 +85,13 @@ const MovieDetial = (props) => {
 					<div
 						className={css.Image}
 						style={{
-							backgroundImage: `url(http://localhost:8000/static/upload/${photo})`,
+							backgroundImage: `url(${HOST}/static/upload/${photo})`,
 							backgroundPosition: "center",
 							backgroundSize: "cover",
 							backgroundRepeat: "no-repeat",
 						}}
 					>
 						<div className={css.Comment}>
-							{/* <div style={{ display: commentShow ? "block" : "none" }}>
-								<Comment movieId={movieId} />
-							</div> */}
 							{commentShow && <Comment movieId={movieId} />}
 						</div>
 						<button
