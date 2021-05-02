@@ -2,21 +2,20 @@ const initialState = {
 	loading: false,
 	order: null,
 	error: null,
-
-	// movie: null,
+	movie: null,
 	schedule: null,
+	seats: [],
 	pageNumber: 1,
 	scheduleId: null,
 	totalPrice: 0,
 	childSeat: 0,
 	adultSeat: 0,
-	// seats: [],
-	// priceAdults: 0,
-	// priceChild: 0,
-	// row: 0,
-	// column: 0,
-	// orderId: null,
-	// ordered: [],
+	priceAdults: 0,
+	priceChild: 0,
+	row: 0,
+	column: 0,
+	orderId: null,
+	ordered: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -51,12 +50,12 @@ const reducer = (state = initialState, action) => {
 				...state,
 				loading: false,
 				schedule: action.schedule,
-				// movie: action.schedule.movieId,
-				// priceAdults: action.schedule.priceAdults,
-				// priceChild: action.schedule.priceChild,
-				// row: action.schedule.hallId.row,
-				// column: action.schedule.hallId.column,
-				// ordered: action.schedule.orders,
+				movie: action.schedule.movieId,
+				priceAdults: action.schedule.priceAdults,
+				priceChild: action.schedule.priceChild,
+				row: action.schedule.hallId.row,
+				column: action.schedule.hallId.column,
+				ordered: action.schedule.orders,
 			};
 		case "LOAD_SCHEDULE_ERROR":
 			return {
@@ -72,15 +71,19 @@ const reducer = (state = initialState, action) => {
 		case "TOTAL_PRICE":
 			return {
 				...state,
-				totalPrice:
-					action.childSeat * state.schedule.priceChild +
-					action.adultSeat * state.schedule.priceAdults,
+				totalPrice: action.totalPrice,
 				childSeat: action.childSeat,
 				adultSeat: action.adultSeat,
+				pageNumber: action.page,
+			};
+		case "ADD_ORDERID":
+			return {
+				...state,
+				orderId: action.orderId,
 			};
 		case "CLEAN_STATE":
 			return {
-				...initialState,
+				...state,
 			};
 		default:
 			return state;

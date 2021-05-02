@@ -45,17 +45,29 @@ export const loadScheduleError = (error) => {
 	};
 };
 
+export const clear = (scheduleId) => {
+	return {};
+};
+
 export const changePage = (page) => {
 	return {
 		type: "CHANGE_PAGE",
 		page,
 	};
 };
-export const handleTotalPrice = (childSeat, adultSeat) => {
+export const handleTotalPrice = (totalPrice, childSeat, adultSeat, page) => {
 	return {
 		type: "TOTAL_PRICE",
+		totalPrice,
 		childSeat,
 		adultSeat,
+		page,
+	};
+};
+export const addOrderId = (orderId) => {
+	return {
+		type: "ADD_ORDERID",
+		orderId,
 	};
 };
 

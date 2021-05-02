@@ -1,0 +1,40 @@
+.Ticket {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.Ticket > span {
+	font-size: 30px;
+	margin: 50px;
+}
+
+.Ticket > div {
+	width: 400px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+.loading {
+	font-family: "Menlo", monospace;
+}
+
+.loading::after {
+	animation: ellipsis 2s steps(3) infinite;
+	content: "...";
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: top;
+}
+
+@keyframes ellipsis {
+	0% {
+		width: 0;
+	}
+	75% {
+		width: 3ch;
+	}
+	100% {
+		width: 3ch;
+	}
+}

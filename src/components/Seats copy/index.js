@@ -9,10 +9,6 @@ import { useSnackbar } from "notistack";
 import { API } from "../../config";
 
 const Seats = (props) => {
-	const row = props.schedule.hadllId !== null ? props.schedule.hallId.row : 0;
-	const column =
-		props.schedule.hadllId !== null ? props.schedule.hallId.column : 0;
-
 	const [seats, setSeats] = useState([]);
 	const [ordered, setOrdered] = useState([]);
 	const { enqueueSnackbar } = useSnackbar();
@@ -103,7 +99,6 @@ const Seats = (props) => {
 			url: `${API}/schedules/${props.scheduleId}`,
 		})
 			.then((res) => {
-				console.log(res.data.data);
 				let orderdCall = [];
 				{
 					res.data.data.orders.length > 0 &&
@@ -111,6 +106,7 @@ const Seats = (props) => {
 							orderdCall.push(...order.seats)
 						);
 				}
+				console.log(orderdCall);
 				setOrdered([...orderdCall]);
 
 				setloadingOrder(false);
@@ -138,9 +134,9 @@ const Seats = (props) => {
 							) : (
 								(() => {
 									let r = [];
-									for (let i = 0; i < row; i++) {
+									for (let i = 0; i < props.row; i++) {
 										let c = [];
-										for (let j = 0; j < column; j++) {
+										for (let j = 0; j < props.column; j++) {
 											let val = i + 1 + "-" + (j + 1);
 											let color = "rgb(68, 68, 81)";
 											let disable = false;
@@ -198,7 +194,6 @@ const Seats = (props) => {
 							/>
 							<span>Таны захиалсан</span>
 						</div>
-						<div>{seats.length + "-" + totalSeat}</div>
 					</div>
 
 					<div className={css.Footer}>
@@ -206,7 +201,7 @@ const Seats = (props) => {
 							variant="contained"
 							color="secondary"
 							onClick={() => {
-								props.changePage(1);
+								props.handleTotalPrice(0, 0, 0, 1);
 							}}
 						>
 							Буцах
@@ -232,21 +227,25 @@ const Seats = (props) => {
 
 const mapStateToProps = (state) => {
 	return {
-		// row: state.orderReducer.row,
-		// column: state.orderReducer.column,
+		row: state.orderReducer.row,
+		column: state.orderReducer.column,
 		childSeat: state.orderReducer.childSeat,
 		adultSeat: state.orderReducer.adultSeat,
 		scheduleId: state.orderReducer.scheduleId,
-		schedule: state.orderReducer.schedule,
-		// ordered: state.orderReducer.ordered,
+		ordered: state.orderReducer.ordered,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changePage: (page) => dispatch(actions.changePage(page)),
-		handleTotalPrice: (childSeat, adultSeat) =>
-			dispatch(actions.handleTotalPrice(childSeat, adultSeat)),
+		handleTotalPrice: (totalPrice, childSeat, adultSeat, page) =>
+			dispatch(
+				actions.handleTotalPrice(totalPrice, childSeat, adultSeat, page)
+			),
+		addOrderId: (orderId) => {
+			dispatch(actions.addOrderId(orderId));
+		},
 	};
 };
 

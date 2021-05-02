@@ -14,16 +14,12 @@ import PaymentIcon from "@material-ui/icons/Payment";
 
 const Order = (props) => {
 	useEffect(() => {
-		// props.cleanState();
+		props.cleanState();
 		props.loadSchedule(props.scheduleId);
 		return () => {
-			props.cleanState();
 			props.changePage(1);
 		};
 	}, []);
-	const movie = props.schedule ? props.schedule.movieId : null;
-	const startTime = props.schedule ? props.schedule.startTime : null;
-	const branch = props.schedule ? props.schedule.branch : null;
 	return (
 		<div className={css.Order}>
 			{!props.scheduleId && <Redirect to="/movies" />}
@@ -65,70 +61,36 @@ const Order = (props) => {
 						<Spinner />
 					) : (
 						<>
-							{!props.loading && props.scheduleId && props.pageNumber === 1 && (
-								<SeatCount />
-							)}
-							{props.scheduleId && props.pageNumber === 2 && <Seats />}
-							{props.scheduleId && props.pageNumber === 3 && <Ticket />}
+							{props.scheduleId && props.pageNumber === 1 && <SeatCount />}
+							{props.pageNumber === 2 && <Seats />}
+							{props.pageNumber === 3 && <Ticket />}
 						</>
 					)}
 				</div>
 				<div className={css.right}>
-					{!props.loading && (
-						<>
-							<span>Таны захиалга</span>
-							<div>
-								<span className={css.Title}>Кино:</span>
-								<span className={css.Content}>
-									{movie !== null ? movie.movName : null}
-								</span>
-							</div>
-							<div>
-								<span className={css.Title}>Хэзээ:</span>
-								<span className={css.Content}>
-									{startTime !== null
-										? startTime.slice(5, 16).replace("T", " ")
-										: null}
-								</span>
-							</div>
-							<div>
-								<span className={css.Title}>Хаана:</span>
-								<span className={css.Content}>
-									{branch !== null ? branch : null}
-								</span>
-							</div>
-							{props.adultSeat > 0 && (
-								<>
-									<div>
-										<span className={css.Title}>Суудлын тоо /Том хүн/:</span>
-										<span className={css.Content}>
-											{props.adultSeat ? props.adultSeat : null}
-										</span>
-									</div>
-								</>
-							)}
-							{props.childSeat > 0 && (
-								<>
-									<div>
-										<span className={css.Title}>Суудлын тоо /Хүүхэд/:</span>
-										<span className={css.Content}>
-											{props.childSeat ? props.childSeat : null}
-										</span>
-									</div>
-								</>
-							)}
-							{props.totalPrice > 0 && (
-								<>
-									<div>
-										<span className={css.Title}>Нийт үнэ:</span>
-										<span className={css.Content}>
-											{props.totalPrice ? props.totalPrice : null}
-										</span>
-									</div>
-								</>
-							)}
-						</>
-					)}
+					<span>Таны захиалга</span>
+					<div>
+						Кино :
+						{JSON.stringify(props.movie !== null ? props.movie.movName : "")}
+					</div>
+					<div>
+						Хэзээ:
+						{JSON.stringify(
+							props.schedule !== null ? props.schedule.startTime : ""
+						)
+							.slice(6, 17)
+							.replace("T", " ")}
+					</div>
+					<div>
+						Хаана:
+						{JSON.stringify(
+							props.schedule !== null ? props.schedule.branch : ""
+						)}
+					</div>
+					<div>Нийт үнэ :{JSON.stringify(props.totalPrice)}</div>
+					<div>Хүүхэд :{JSON.stringify(props.childSeat)}</div>
+					<div>Том хүн :{JSON.stringify(props.adultSeat)}</div>
+					<div>Суудал :{JSON.stringify(props.adultSeat + props.childSeat)}</div>
 				</div>
 			</div>
 		</div>
@@ -137,13 +99,13 @@ const Order = (props) => {
 
 const mapStateToProps = (state) => {
 	return {
-		// movie: state.orderReducer.movie,
+		movie: state.orderReducer.movie,
 		pageNumber: state.orderReducer.pageNumber,
 		loading: state.orderReducer.loading,
-		// order: state.orderReducer.order,
+		order: state.orderReducer.order,
 		error: state.orderReducer.error,
 		schedule: state.orderReducer.schedule,
-		// seats: state.orderReducer.seats,
+		seats: state.orderReducer.seats,
 		scheduleId: state.orderReducer.scheduleId,
 		totalPrice: state.orderReducer.totalPrice,
 		childSeat: state.orderReducer.childSeat,
