@@ -61,7 +61,7 @@ class Ticket extends Component {
 			clearInterval(this.timer);
 			let token = localStorage.getItem("t");
 			axios
-				.delete(`${API}1/orders/${this.props.orderId}`, {
+				.delete(`${API}/orders/${this.props.orderId}`, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
@@ -80,7 +80,7 @@ class Ticket extends Component {
 		this.setState({ loading: true });
 		axios
 			.put(
-				`${API}1/orders/${this.props.orderId}`,
+				`${API}/orders/${this.props.orderId}`,
 				{
 					scheduleId: this.props.scheduleId,
 				},

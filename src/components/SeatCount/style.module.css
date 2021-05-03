@@ -25,6 +25,10 @@
 	cursor: pointer;
 	background-color: rgb(0, 187, 56);
 }
+.Add1:hover,
+.Add2:hover {
+	background-color: rgb(14, 150, 54);
+}
 .Remove1,
 .Remove2 {
 	border-radius: 20px 0 0 20px;
@@ -32,7 +36,10 @@
 	cursor: pointer;
 	background-color: rgb(255, 106, 101);
 }
-
+.Remove1:hover,
+.Remove2:hover {
+	background-color: rgb(253, 68, 62);
+}
 .Btn {
 	display: flex;
 	flex-direction: row;

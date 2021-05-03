@@ -1,3 +1,20 @@
+.item {
+	display: flex;
+	flex-direction: row;
+	/* padding: 5px 0; */
+}
+.event {
+	margin: auto 0;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+.event:hover {
+	background-color: rgb(153, 152, 152);
+}
+
 .CommentDetial {
 	display: flex;
 	flex-direction: row;
@@ -16,6 +33,7 @@
 	max-width: 150px;
 	min-width: 50px;
 }
+
 .Com {
 	margin-top: 5px;
 }
@@ -29,7 +47,7 @@
 }
 .time {
 	color: rgb(168, 168, 168);
-	font-size: 7px;
+	font-size: 9px;
 }
 
 .username {

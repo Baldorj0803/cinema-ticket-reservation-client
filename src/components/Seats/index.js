@@ -7,12 +7,13 @@ import Spinner from "../Spinner";
 import Button from "@material-ui/core/Button";
 import { useSnackbar } from "notistack";
 import { API } from "../../config";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import WarningIcon from "@material-ui/icons/Warning";
 
 const Seats = (props) => {
 	const row = props.schedule.hadllId !== null ? props.schedule.hallId.row : 0;
 	const column =
 		props.schedule.hadllId !== null ? props.schedule.hallId.column : 0;
-
 	const [seats, setSeats] = useState([]);
 	const [ordered, setOrdered] = useState([]);
 	const { enqueueSnackbar } = useSnackbar();
@@ -23,7 +24,7 @@ const Seats = (props) => {
 
 	const order = () => {
 		if (seats.length !== totalSeat || seats.length === 0) {
-			alert("Суудалаа гүйцэт сонгоно уу" + seats.length + "-" + totalSeat);
+			enqueueSnackbar("Суудлаа гүйцэт сонгоно уу", { variant: "warning" });
 		} else {
 			let token = localStorage.getItem("t");
 			setloading(true);
@@ -63,7 +64,7 @@ const Seats = (props) => {
 
 		if (e.target.style.backgroundColor === "rgb(68, 68, 81)") {
 			if (seats.length === totalSeat) {
-				alert("Дахин сонгох боломжгүй" + seats.length + "-" + totalSeat);
+				enqueueSnackbar("Дахин сонгох боломжгүй", { variant: "error" });
 			} else {
 				setSeats((prevState) => [...prevState, { row: r, column: c }]);
 				e.target.style.backgroundColor = "rgb(137, 255, 77)";
@@ -96,6 +97,7 @@ const Seats = (props) => {
 				});
 		}
 	}, [ordered]);
+
 	const loadOrder = () => {
 		setloadingOrder(true);
 		axios({
@@ -103,7 +105,6 @@ const Seats = (props) => {
 			url: `${API}/schedules/${props.scheduleId}`,
 		})
 			.then((res) => {
-				console.log(res.data.data);
 				let orderdCall = [];
 				{
 					res.data.data.orders.length > 0 &&
@@ -111,8 +112,12 @@ const Seats = (props) => {
 							orderdCall.push(...order.seats)
 						);
 				}
+				//herew vldsen suudal zahailah suudlaas baga baiwal zahialga tsutslagdana
+				if (row * column - orderdCall.length < totalSeat) {
+					props.handleTotalPrice(0, 0);
+					props.changePage(1);
+				}
 				setOrdered([...orderdCall]);
-
 				setloadingOrder(false);
 			})
 			.catch((err) => {
@@ -198,7 +203,20 @@ const Seats = (props) => {
 							/>
 							<span>Таны захиалсан</span>
 						</div>
-						<div>{seats.length + "-" + totalSeat}</div>
+						<div className={css.mySeats}>
+							<div>
+								<div>таны захиалга</div>
+								<div style={{ fontSize: "20px" }}>
+									{seats.length + "-" + totalSeat}
+								</div>
+
+								{seats.length === totalSeat ? (
+									<CheckBoxIcon htmlColor="green" />
+								) : (
+									<WarningIcon htmlColor="yellow" />
+								)}
+							</div>
+						</div>
 					</div>
 
 					<div className={css.Footer}>
@@ -217,7 +235,9 @@ const Seats = (props) => {
 							color="primary"
 							onClick={() => {
 								seats.length !== totalSeat
-									? alert("Суудалаа гүйцэт сонгоно уу")
+									? enqueueSnackbar("Суудлаа гүйцэт сонгоно уу", {
+											variant: "warning",
+									  })
 									: order();
 							}}
 						>
@@ -232,13 +252,10 @@ const Seats = (props) => {
 
 const mapStateToProps = (state) => {
 	return {
-		// row: state.orderReducer.row,
-		// column: state.orderReducer.column,
 		childSeat: state.orderReducer.childSeat,
 		adultSeat: state.orderReducer.adultSeat,
 		scheduleId: state.orderReducer.scheduleId,
 		schedule: state.orderReducer.schedule,
-		// ordered: state.orderReducer.ordered,
 	};
 };
 
@@ -247,6 +264,7 @@ const mapDispatchToProps = (dispatch) => {
 		changePage: (page) => dispatch(actions.changePage(page)),
 		handleTotalPrice: (childSeat, adultSeat) =>
 			dispatch(actions.handleTotalPrice(childSeat, adultSeat)),
+		addOrderId: (orderId) => dispatch(actions.addOrderId(orderId)),
 	};
 };
 

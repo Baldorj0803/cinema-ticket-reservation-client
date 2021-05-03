@@ -15,8 +15,7 @@
 	flex-direction: row;
 	border-radius: 10px;
 	opacity: 0.9;
-	background-color: wheat;
-	/* background-color: rgb(211, 243, 255); */
+	background-color: rgb(250, 216, 152);
 }
 
 .center {
@@ -58,12 +57,26 @@
 	font-size: 20px;
 	padding: 10px 0 0 5px;
 }
-.right span {
-	margin: 0 auto;
-	font-size: 25px;
-	margin-bottom: 20px;
+
+.right > span {
+	text-align: center;
+	margin-bottom: 15px;
 }
 .right > div {
-	border-bottom: 1px solid gray;
-	padding: 5px 0 5px 5px;
+	display: flex;
+	flex-direction: row;
+	margin-top: 5px;
+}
+
+.Head {
+	display: flex;
+	flex-direction: column;
+	margin-left: 10px;
+}
+.Title {
+	color: rgb(66, 66, 66);
+	font-size: 12px;
+}
+.Content {
+	font-size: 15px;
 }

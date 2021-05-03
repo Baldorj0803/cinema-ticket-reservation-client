@@ -11,7 +11,11 @@ import TheatersIcon from "@material-ui/icons/Theaters";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
 import FormatListNumberedIcon from "@material-ui/icons/FormatListNumbered";
 import PaymentIcon from "@material-ui/icons/Payment";
-
+import MovieIcon from "@material-ui/icons/Movie";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import RoomIcon from "@material-ui/icons/Room";
+import PersonIcon from "@material-ui/icons/Person";
+import CreditCardIcon from "@material-ui/icons/CreditCard";
 const Order = (props) => {
 	useEffect(() => {
 		// props.cleanState();
@@ -78,52 +82,86 @@ const Order = (props) => {
 						<>
 							<span>Таны захиалга</span>
 							<div>
-								<span className={css.Title}>Кино:</span>
-								<span className={css.Content}>
-									{movie !== null ? movie.movName : null}
-								</span>
+								<div className={css.Icon}>
+									<MovieIcon fontSize="large" />
+								</div>
+								<div className={css.Head}>
+									<span className={css.Content}>
+										{movie !== null ? movie.movName : null}
+									</span>
+									<span className={css.Title}>Киноны нэр</span>
+								</div>
 							</div>
 							<div>
-								<span className={css.Title}>Хэзээ:</span>
-								<span className={css.Content}>
-									{startTime !== null
-										? startTime.slice(5, 16).replace("T", " ")
-										: null}
-								</span>
+								<div className={css.Icon}>
+									<AccessTimeIcon fontSize="large" />
+								</div>
+								<div className={css.Head}>
+									<span className={css.Content}>
+										{startTime !== null
+											? startTime.slice(5, 16).replace("T", " ")
+											: null}
+									</span>
+									<span className={css.Title}>Хэзээ</span>
+								</div>
 							</div>
+
 							<div>
-								<span className={css.Title}>Хаана:</span>
-								<span className={css.Content}>
-									{branch !== null ? branch : null}
-								</span>
+								<div className={css.Icon}>
+									<RoomIcon fontSize="large" />
+								</div>
+								<div className={css.Head}>
+									<span className={css.Content}>
+										{branch !== null ? branch : null}
+									</span>
+									<span className={css.Title}>Хаана</span>
+								</div>
 							</div>
+
 							{props.adultSeat > 0 && (
 								<>
 									<div>
-										<span className={css.Title}>Суудлын тоо /Том хүн/:</span>
-										<span className={css.Content}>
-											{props.adultSeat ? props.adultSeat : null}
-										</span>
+										<div className={css.Icon}>
+											<PersonIcon fontSize="large" />
+										</div>
+										<div className={css.Head}>
+											<span className={css.Content}>
+												{props.adultSeat ? props.adultSeat : null}
+											</span>
+											<span className={css.Title}>Том хүн</span>
+										</div>
 									</div>
 								</>
 							)}
+
 							{props.childSeat > 0 && (
 								<>
 									<div>
-										<span className={css.Title}>Суудлын тоо /Хүүхэд/:</span>
-										<span className={css.Content}>
-											{props.childSeat ? props.childSeat : null}
-										</span>
+										<div className={css.Icon} style={{ padding: "0 5px" }}>
+											<PersonIcon fontSize="medium" />
+										</div>
+										<div className={css.Head}>
+											<span className={css.Content}>
+												{props.childSeat ? props.childSeat : null}
+											</span>
+											<span className={css.Title}>Хүүхэд</span>
+										</div>
 									</div>
 								</>
 							)}
+
 							{props.totalPrice > 0 && (
 								<>
 									<div>
-										<span className={css.Title}>Нийт үнэ:</span>
-										<span className={css.Content}>
-											{props.totalPrice ? props.totalPrice : null}
-										</span>
+										<div className={css.Icon}>
+											<CreditCardIcon fontSize="large" />
+										</div>
+										<div className={css.Head}>
+											<span className={css.Content}>
+												{props.totalPrice ? props.totalPrice : null}
+											</span>
+											<span className={css.Title}>Нийт үнэ</span>
+										</div>
 									</div>
 								</>
 							)}
@@ -137,13 +175,10 @@ const Order = (props) => {
 
 const mapStateToProps = (state) => {
 	return {
-		// movie: state.orderReducer.movie,
 		pageNumber: state.orderReducer.pageNumber,
 		loading: state.orderReducer.loading,
-		// order: state.orderReducer.order,
 		error: state.orderReducer.error,
 		schedule: state.orderReducer.schedule,
-		// seats: state.orderReducer.seats,
 		scheduleId: state.orderReducer.scheduleId,
 		totalPrice: state.orderReducer.totalPrice,
 		childSeat: state.orderReducer.childSeat,

@@ -15,7 +15,7 @@ const MyOrder = () => {
 	useEffect(() => {
 		let token = localStorage.getItem("t");
 		axios
-			.get("${API}/orders/user?sort=date", {
+			.get(`${API}/orders/user?sort=date`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},

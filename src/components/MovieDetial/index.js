@@ -85,7 +85,7 @@ const MovieDetial = (props) => {
 					<div
 						className={css.Image}
 						style={{
-							backgroundImage: `url(${HOST}/static/upload/${photo})`,
+							backgroundImage: `url(${HOST}static/upload/${photo})`,
 							backgroundPosition: "center",
 							backgroundSize: "cover",
 							backgroundRepeat: "no-repeat",

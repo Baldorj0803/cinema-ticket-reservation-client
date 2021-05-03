@@ -6,36 +6,66 @@ import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { useSnackbar } from "notistack";
-import { HOST } from "../../config";
+import { HOST, API } from "../../config";
+import axios from "axios";
 
 const SeatCount = (props) => {
-	const [totalPrice, settotalPrice] = useState(0);
-	const [child, setChild] = useState(0);
-	const [adult, setAdult] = useState(0);
 	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-	useEffect(() => {
-		let tot = child * props.priceAdults + adult * props.priceChild;
 
-		settotalPrice(tot);
-	}, [child, adult]);
-
+	const [remainSeats, setRemainSeats] = useState(0);
+	const [loading, setloading] = useState("");
+	const [error, setError] = useState("");
 	const movie = props.schedule ? props.schedule.movieId : null;
 	const priceChild = props.schedule ? props.schedule.priceChild : null;
 	const priceAdults = props.schedule ? props.schedule.priceAdults : null;
 	const adultSeat = props.adultSeat;
 	const childSeat = props.childSeat;
+	const hall = props.schedule ? props.schedule.hallId : null;
+	const totalSeat = hall !== null ? hall.row * hall.column : null;
+
+	useEffect(() => {
+		setloading(true);
+		axios({
+			method: "get",
+			url: `${API}/schedules/${props.scheduleId}`,
+		})
+			.then((res) => {
+				let orderCall = [];
+				{
+					res.data.data.orders.length > 0 &&
+						res.data.data.orders.map((order) => orderCall.push(...order.seats));
+				}
+				setRemainSeats(totalSeat - orderCall.length);
+				setloading(false);
+			})
+			.catch((err) => {
+				setloading(false);
+				setError(err.response.data.error);
+				enqueueSnackbar(error, { variant: "error" });
+			});
+	}, []);
 
 	const handleSeatAdults = (value) => {
-		if (adultSeat + value >= 0) {
-			let newSeat = adultSeat + value;
-			props.handleTotalPrice(childSeat, newSeat);
-		}
+		if (
+			adultSeat + childSeat < remainSeats &&
+			adultSeat + childSeat + value <= 10
+		) {
+			if (adultSeat + value >= 0) {
+				let newSeat = adultSeat + value;
+				props.handleTotalPrice(childSeat, newSeat);
+			}
+		} else enqueueSnackbar("Суудал дүүрсэн байна", { variant: "warning" });
 	};
 	const handleSeatChild = (value) => {
-		if (childSeat + value >= 0) {
-			let newSeat = childSeat + value;
-			props.handleTotalPrice(newSeat, adultSeat);
-		}
+		if (
+			adultSeat + childSeat < remainSeats &&
+			adultSeat + childSeat + value <= 10
+		) {
+			if (childSeat + value >= 0) {
+				let newSeat = childSeat + value;
+				props.handleTotalPrice(newSeat, adultSeat);
+			}
+		} else enqueueSnackbar("Суудал дүүрсэн байна", { variant: "warning" });
 	};
 
 	return (
@@ -52,28 +82,36 @@ const SeatCount = (props) => {
 					<h2 className={css.Title}>{movie === null ? "" : movie.movName}</h2>
 					<div style={{ fontSize: "30px" }}>Нийт үнэ:{props.totalPrice}</div>
 					<div style={{ fontSize: "20px" }}>Том хүн:{props.adultSeat}</div>
-					<div className={css.Btn}>
-						<button
-							className={css.Remove1}
-							onClick={() => handleSeatAdults(-1)}
-						>
-							<RemoveIcon />
-						</button>
-						<div>{priceAdults}</div>
-						<button className={css.Add1} onClick={() => handleSeatAdults(1)}>
-							<AddIcon />
-						</button>
-					</div>
+					{!loading && (
+						<div className={css.Btn}>
+							<button
+								className={css.Remove1}
+								onClick={() => handleSeatAdults(-1)}
+							>
+								<RemoveIcon />
+							</button>
+							<div>{priceAdults}</div>
+							<button className={css.Add1} onClick={() => handleSeatAdults(1)}>
+								<AddIcon />
+							</button>
+						</div>
+					)}
+
 					<div style={{ fontSize: "20px" }}>Хүүхэд:{props.childSeat}</div>
-					<div className={css.Btn}>
-						<button className={css.Remove2} onClick={() => handleSeatChild(-1)}>
-							<RemoveIcon />
-						</button>
-						<div>{priceChild}</div>
-						<button className={css.Add2} onClick={() => handleSeatChild(1)}>
-							<AddIcon />
-						</button>
-					</div>
+					{!loading && (
+						<div className={css.Btn}>
+							<button
+								className={css.Remove2}
+								onClick={() => handleSeatChild(-1)}
+							>
+								<RemoveIcon />
+							</button>
+							<div>{priceChild}</div>
+							<button className={css.Add2} onClick={() => handleSeatChild(1)}>
+								<AddIcon />
+							</button>
+						</div>
+					)}
 				</div>
 				<div className={css.Footer}>
 					<Button
@@ -101,6 +139,7 @@ const mapStateToProps = (state) => {
 		totalPrice: state.orderReducer.totalPrice,
 		adultSeat: state.orderReducer.adultSeat,
 		childSeat: state.orderReducer.childSeat,
+		scheduleId: state.orderReducer.scheduleId,
 	};
 };
 

@@ -3,7 +3,9 @@ import css from "./style.module.css";
 import axios from "axios";
 import CommentDetial from "../CommentDetial";
 import { API } from "../../config";
+import { useSnackbar } from "notistack";
 const Comment = (props) => {
+	const { enqueueSnackbar } = useSnackbar();
 	const [comment, setComment] = useState("");
 	const [comments, setComments] = useState([]);
 	const [page, setPage] = useState(1);
@@ -20,6 +22,24 @@ const Comment = (props) => {
 
 	const handleChange = (e) => {
 		setComment(e.target.value);
+	};
+
+	const deleteComment = (commentId) => {
+		let token = localStorage.getItem("t");
+		axios
+			.delete(`${API}/comments/${commentId}`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((res) => {
+				let result = comments.filter((comment) => comment._id !== commentId);
+				setComments([...result]);
+				enqueueSnackbar("Амжилттай устгалаа", { variant: "success" });
+			})
+			.catch((err) => {
+				alert(err.response.data.data);
+			});
 	};
 
 	const loadComment = () => {
@@ -61,7 +81,6 @@ const Comment = (props) => {
 			)
 			.then((res) => {
 				setComment("");
-				console.log(res.data.data);
 				setComments((prevState) => [res.data.data, ...prevState]);
 			})
 			.catch((err) => {
@@ -82,7 +101,14 @@ const Comment = (props) => {
 						comments.map((comment, i) => {
 							let person = false;
 							if (comment.userId._id === userId) person = true;
-							return <CommentDetial you={person} key={i} data={comment} />;
+							return (
+								<CommentDetial
+									you={person}
+									key={i}
+									data={comment}
+									deleteComment={deleteComment}
+								/>
+							);
 						})}
 				</div>
 				<div className={css.Button}>

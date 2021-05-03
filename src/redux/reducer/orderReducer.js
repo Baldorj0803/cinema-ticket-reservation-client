@@ -2,21 +2,13 @@ const initialState = {
 	loading: false,
 	order: null,
 	error: null,
-
-	// movie: null,
 	schedule: null,
 	pageNumber: 1,
 	scheduleId: null,
 	totalPrice: 0,
 	childSeat: 0,
 	adultSeat: 0,
-	// seats: [],
-	// priceAdults: 0,
-	// priceChild: 0,
-	// row: 0,
-	// column: 0,
-	// orderId: null,
-	// ordered: [],
+	orderId: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -77,6 +69,11 @@ const reducer = (state = initialState, action) => {
 					action.adultSeat * state.schedule.priceAdults,
 				childSeat: action.childSeat,
 				adultSeat: action.adultSeat,
+			};
+		case "ADD_ORDERID":
+			return {
+				...state,
+				orderId: action.orderId,
 			};
 		case "CLEAN_STATE":
 			return {

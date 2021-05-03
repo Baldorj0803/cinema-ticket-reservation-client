@@ -64,3 +64,10 @@ export const cleanState = () => {
 		type: "CLEAN_STATE",
 	};
 };
+
+export const addOrderId = (orderId) => {
+	return {
+		type: "ADD_ORDERID",
+		orderId,
+	};
+};
