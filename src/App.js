@@ -15,6 +15,7 @@ import MyOrder from "./pages/MyOrder";
 import Dashboard from "./pages/Dashboard";
 import { role } from "./auth/Role";
 import Footer from "./components/Footer";
+import AdminDashboard from "./pages/AdminDashboard";
 function App(props) {
 	useEffect(() => {
 		const token = localStorage.getItem("t");
@@ -63,6 +64,11 @@ function App(props) {
 					{role() === "manager" && (
 						<Route path="/dashboard">
 							<Dashboard />
+						</Route>
+					)}
+					{role() === "admin" && (
+						<Route path="/admin-dashboard">
+							<AdminDashboard />
 						</Route>
 					)}
 					<Redirect to="/" />

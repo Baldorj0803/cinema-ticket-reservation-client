@@ -59,6 +59,29 @@ const Menu = (props) => {
 							</div>
 						</div>
 					)}
+					{role() === "admin" && (
+						<div className={styles.logout}>
+							<span className={styles.text} onClick={() => setDrop(!drop)}>
+								Админ
+								<ArrowDropDownIcon />
+							</span>
+							<div style={{ display: drop ? "flex" : "none" }}>
+								<div className={styles.item} onClick={() => setDrop(false)}>
+									<Link
+										style={{ textDecoration: "none" }}
+										to="/admin-dashboard"
+									>
+										Dashboard
+									</Link>
+								</div>
+								<div className={styles.item} onClick={() => setDrop(false)}>
+									<Link style={{ textDecoration: "none" }} to="/logout">
+										Гарах
+									</Link>
+								</div>
+							</div>
+						</div>
+					)}
 				</>
 			) : (
 				<>
