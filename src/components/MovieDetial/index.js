@@ -6,26 +6,46 @@ import * as actions from "../../redux/actions/orderAction";
 import { connect } from "react-redux";
 import Comment from "../Comment";
 import { API, HOST } from "../../config";
+import Rating from "@material-ui/lab/Rating";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import { useSnackbar } from "notistack";
 
 const MovieDetial = (props) => {
-	const [movie, setMovie] = useState({ data: {}, loading: false, error: "" });
-
+	const [movie, setMovie] = useState({ loading: false, error: "" });
+	const [data, setdata] = useState({});
+	const { enqueueSnackbar } = useSnackbar();
 	const { movieId } = useParams();
 	const [commentShow, setcommentShow] = useState(false);
+	const [rated, setRated] = useState(false);
+	const [myRating, setmyRating] = useState(0.0);
+	const [movieRating, setmovieRating] = useState(0.0);
 
 	useEffect(() => {
 		setMovie((prevState) => ({
 			...prevState,
 			loading: true,
 		}));
+
+		let query = `${API}/movies/${movieId}`;
+		if (props.userId) query = query + `?userId=${props.userId}`;
 		axios
-			.get(`${API}/movies/${movieId}`)
+			.get(query)
 			.then((movie) => {
+				console.log(movie.data);
 				setMovie((prevState) => ({
 					...prevState,
 					loading: false,
-					data: movie.data.data,
 				}));
+				setdata(movie.data.data);
+				let r = averageRate(
+					movie.data.data.rateValue,
+					movie.data.data.rateCount
+				);
+				setmovieRating(r);
+				let i = FloatToInt(r);
+				setmyRating(i);
+				setRated(movie.data.rated);
 			})
 			.catch((err) => {
 				setMovie((prevState) => ({
@@ -37,18 +57,57 @@ const MovieDetial = (props) => {
 	}, []);
 
 	const {
-		// ageLimit,
 		createdDate,
 		duration,
-		// _id,
 		movAuthor,
 		movDesc,
 		movName,
 		photo,
 		schedules,
 		movGenre,
-	} = movie.data;
+	} = data;
 
+	const averageRate = (value, count) => {
+		if (value < 1 || count < 1) {
+			return 0;
+		} else {
+			return Number.parseFloat(value / count).toFixed(1);
+		}
+	};
+	const FloatToInt = (value) => {
+		return Math.round(value);
+	};
+
+	const sendRating = (e) => {
+		const value = parseInt(e.target.value);
+		setmyRating(value);
+
+		let token = localStorage.getItem("t");
+		axios
+			.post(
+				`${API}/movies/${movieId}/rating`,
+				{
+					rating: value,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then((res) => {
+				setRated(true);
+				let r = averageRate(
+					res.data.ratedMovie.rateValue,
+					res.data.ratedMovie.rateCount
+				);
+				setmovieRating(r);
+				enqueueSnackbar("Баярлалаа", { variant: "success" });
+			})
+			.catch((err) => {
+				enqueueSnackbar(err.response.data.error, { variant: "warning" });
+			});
+	};
 	const stringToDate = (str) => {
 		let date = new Date(str);
 		date.setHours(date.getHours() - 8);
@@ -111,6 +170,9 @@ const MovieDetial = (props) => {
 						<span>{createdDate}</span>
 						<span>{duration} мин</span>
 						<span>{movAuthor}</span>
+						<span style={{ color: "orange" }}>
+							{!movie.loading && movieRating}
+						</span>
 					</div>
 					<div className={css.Category}>
 						<span>Төрөл: </span>
@@ -119,8 +181,29 @@ const MovieDetial = (props) => {
 								return <span key={category._id}>{category.name}</span>;
 							})}
 					</div>
+					<div className={css.RateInfo}>
+						{props.userId
+							? rated
+								? "Та үнэлгээ өгсөн байна"
+								: "Үнэлгээ өгнө үү"
+							: ""}
+					</div>
+
+					{!movie.loading && (
+						<Rating
+							name="customized-10"
+							value={myRating}
+							max={10}
+							className={css.Rating}
+							readOnly={rated}
+							onChange={(e) => sendRating(e)}
+						/>
+					)}
 					<div className={css.Description}>
-						<span>Тайлбар: {movDesc}</span>
+						<span>
+							<span style={{ color: "black" }}>Тайлбар: </span>
+							{movDesc}
+						</span>
 					</div>
 
 					<div className={css.Schedules}>

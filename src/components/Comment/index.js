@@ -84,7 +84,7 @@ const Comment = (props) => {
 				setComments((prevState) => [res.data.data, ...prevState]);
 			})
 			.catch((err) => {
-				console.log(err.response);
+				enqueueSnackbar(err.response.data.error, { variant: "error" });
 			});
 	};
 

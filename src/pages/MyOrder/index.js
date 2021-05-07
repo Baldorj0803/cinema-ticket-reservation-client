@@ -44,36 +44,42 @@ const MyOrder = () => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{orders.map((order) => {
-							let sit = "";
-							order.seats.forEach((e) => {
-								sit = sit + e.row + "-" + e.column + " ";
-							});
-							return (
-								<TableRow key={order._id}>
-									<TableCell component="th" scope="row">
-										{order.movieName}
-									</TableCell>
-									<TableCell align="center">
-										{order.scheduleId === null
-											? ""
-											: order.scheduleId.startTime
-													.slice(5, 16)
-													.replace("T", " ")}
-									</TableCell>
-									<TableCell align="center">{order.adult}</TableCell>
-									<TableCell align="center">{order.child}</TableCell>
-									<TableCell align="center">{order.totalPrice}</TableCell>
-									<TableCell align="center">
-										{order.scheduleId === null ? "" : order.scheduleId.branch}
-									</TableCell>
-									<TableCell align="center">
-										{order.date.slice(5, 16).replace("T", " ")}
-									</TableCell>
-									<TableCell align="right">{sit}</TableCell>
-								</TableRow>
-							);
-						})}
+						{orders.length > 0 ? (
+							orders.map((order) => {
+								let sit = "";
+								order.seats.forEach((e) => {
+									sit = sit + e.row + "-" + e.column + " ";
+								});
+								return (
+									<TableRow key={order._id}>
+										<TableCell component="th" scope="row">
+											{order.movieName}
+										</TableCell>
+										<TableCell align="center">
+											{order.scheduleId === null
+												? ""
+												: order.scheduleId.startTime
+														.slice(5, 16)
+														.replace("T", " ")}
+										</TableCell>
+										<TableCell align="center">{order.adult}</TableCell>
+										<TableCell align="center">{order.child}</TableCell>
+										<TableCell align="center">{order.totalPrice}</TableCell>
+										<TableCell align="center">
+											{order.scheduleId === null ? "" : order.scheduleId.branch}
+										</TableCell>
+										<TableCell align="center">
+											{order.date.slice(5, 16).replace("T", " ")}
+										</TableCell>
+										<TableCell align="right">{sit}</TableCell>
+									</TableRow>
+								);
+							})
+						) : (
+							<tr style={{ color: "gray", fontSize: "14px" }}>
+								Үр дүн олдсонгүй
+							</tr>
+						)}
 					</TableBody>
 				</Table>
 			</TableContainer>

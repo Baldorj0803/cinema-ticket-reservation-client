@@ -7,6 +7,9 @@ import LocationCityIcon from "@material-ui/icons/LocationCity";
 import LabelImportantIcon from "@material-ui/icons/LabelImportant";
 import MovieIcon from "@material-ui/icons/Movie";
 import GroupIcon from "@material-ui/icons/Group";
+import TodayIcon from "@material-ui/icons/Today";
+import EventSeatIcon from "@material-ui/icons/EventSeat";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 const HomeDashboard = () => {
 	const { enqueueSnackbar } = useSnackbar();
 	const [data, setdata] = useState([]);
@@ -20,6 +23,7 @@ const HomeDashboard = () => {
 				},
 			})
 			.then((res) => {
+				console.log(res.data.data);
 				setdata(res.data.data);
 			})
 			.catch((err) => {
@@ -64,6 +68,22 @@ const HomeDashboard = () => {
 				</div>
 				<div className={css.Item}>
 					<div className={css.head}>
+						<div className={css.Icon} style={{ backgroundColor: "#26D5C7" }}>
+							<GroupIcon htmlColor="white" fontSize="large" />
+						</div>
+						<div className={css.info}>
+							<p>Нийт Ажилтан</p>
+							<span>{data["totalStaff"]}</span>
+						</div>
+					</div>
+					<div className={css.Footer}>
+						<GroupIcon htmlColor="#26D5C7" fontSize="small" />
+						<span>Ажилчид</span>
+					</div>
+				</div>
+
+				<div className={css.Item}>
+					<div className={css.head}>
 						<div className={css.Icon} style={{ backgroundColor: "#FF542E" }}>
 							<MovieIcon htmlColor="white" fontSize="large" />
 						</div>
@@ -77,19 +97,55 @@ const HomeDashboard = () => {
 						<span>Кинонууд</span>
 					</div>
 				</div>
-				<div className={css.Item}>
-					<div className={css.head}>
-						<div className={css.Icon} style={{ backgroundColor: "#26D5C7" }}>
-							<GroupIcon htmlColor="white" fontSize="large" />
+			</div>
+			<div className={css.SecondContent}>
+				<div className={css.headItem}>
+					<div className={css.Item2} style={{ backgroundColor: "orange" }}>
+						<div className={css.Icon2}>
+							<TodayIcon htmlColor="orange" />
 						</div>
-						<div className={css.info}>
-							<p>Нийт Ажилтан</p>
-							<span>{data["totalStaff"]}</span>
+						<div className={css.Title2}>
+							<span>Хуваарь</span>
+						</div>
+						<div className={css.Value}>
+							<span>{data["totalSchedule"]}</span>
 						</div>
 					</div>
-					<div className={css.Footer}>
-						<GroupIcon htmlColor="#26D5C7" fontSize="small" />
-						<span>Ажилчид</span>
+					<div className={css.Item2} style={{ backgroundColor: "#28B30F" }}>
+						<div className={css.Icon2}>
+							<GroupIcon htmlColor="#28B30F" />
+						</div>
+						<div className={css.Title2}>
+							<span>Хэрэглэгчид</span>
+						</div>
+						<div className={css.Value}>
+							<span>{data["totalUser"]}</span>
+						</div>
+					</div>
+				</div>
+
+				<div className={css.footItem}>
+					<div className={css.Item2} style={{ backgroundColor: "#26D5C7" }}>
+						<div className={css.Icon2}>
+							<EventSeatIcon htmlColor="#26D5C7" />
+						</div>
+						<div className={css.Title2}>
+							<span>Захиалгын тоо</span>
+						</div>
+						<div className={css.Value}>
+							<span>{data["totalOrder"]}</span>
+						</div>
+					</div>
+					<div className={css.Item2} style={{ backgroundColor: "#FF542E" }}>
+						<div className={css.Icon2}>
+							<AttachMoneyIcon htmlColor="#FF542E" />
+						</div>
+						<div className={css.Title2}>
+							<span>Захиалгын үнэ</span>
+						</div>
+						<div className={css.Value}>
+							<span>{data["totalPrice"]}₮</span>
+						</div>
 					</div>
 				</div>
 			</div>
