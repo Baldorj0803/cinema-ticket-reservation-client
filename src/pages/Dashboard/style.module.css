@@ -1,6 +1,5 @@
-.Main {
+/* .Main {
 	display: flex;
-	/* margin-top: 120px; */
 	flex-direction: row;
 	width: 100%;
 	min-height: 590px;
@@ -13,7 +12,6 @@
 }
 
 .Dashboard {
-	/* border: 1px solid orange; */
 	width: 90%;
 	display: flex;
 	flex-direction: row;
@@ -37,4 +35,76 @@
 	width: 80%;
 	background-color: #d6dbdf;
 	padding: 20px;
+} */
+
+.Main {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	min-height: 590px;
+	height: 100vh;
+	margin: auto;
+	padding-top: 80px;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color: orange;
+}
+
+.Dashboard {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+
+	width: 100%;
+}
+.Left {
+	width: 20%;
+	background-color: white;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.menuItem {
+	color: black;
+	height: 50px;
+	padding: 3px 10px;
+}
+.menuItem > div {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	padding: 0 25px;
+	cursor: pointer;
+}
+.Left > .menuItem > div > span {
+	margin-left: 10px;
+}
+.head {
+	margin: 20px 0px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+}
+.head span {
+	font-size: 20px;
+	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+	border-bottom: 1px solid gray;
+	padding-bottom: 5px;
+}
+.Right {
+	width: 80%;
+	background-color: white;
+	padding: 20px;
+	z-index: 1;
+}
+.logout {
+	display: flex;
+	justify-content: flex-end;
+	padding: 15px;
+	align-items: center;
 }

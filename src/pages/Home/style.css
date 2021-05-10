@@ -7,7 +7,7 @@
 	overflow: hidden;
 	margin: 10px;
 	min-width: 230px;
-	max-width: 315px;
+	max-width: 100%;
 	width: 60%;
 	color: #ffffff;
 	font-size: 16px;
@@ -49,6 +49,9 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+}
+.slick-next {
+	background-color: orange;
 }
 .snip1584 h3,
 .snip1584 h5 {
@@ -121,6 +124,7 @@
 	flex-direction: column;
 	justify-content: center;
 	margin-top: 90px;
+	width: 100%;
 }
 .Home1 h2 {
 	margin: 0 auto;

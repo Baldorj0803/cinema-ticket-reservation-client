@@ -1,27 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import css from "./style.module.css";
 import axios from "axios";
 import { API } from "../../config";
 
 const BranchHandle = (props) => {
-	const [movies, setMovies] = useState([]);
 	const [form, setForm] = useState({
 		branchName: "",
 		branchAddress: "",
 		branchPhoneNumber: "",
 		formData: "",
 	});
-	useEffect(() => {
-		setForm({ ...form, formData: new FormData(), ...props.branch });
-		axios
-			.get(`${API}/movies?limit=30&select=movName`)
-			.then((res) => {
-				setMovies(res.data.data);
-			})
-			.catch((err) => {
-				props.alert(err.response.data.error, { variant: "warning" });
-			});
-	}, []);
 
 	const handleChange = (name) => (event) => {
 		form.formData.set(name, event.target.value);

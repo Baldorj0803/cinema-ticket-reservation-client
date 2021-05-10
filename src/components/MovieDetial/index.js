@@ -4,11 +4,8 @@ import css from "./style.module.css";
 import { useParams, useHistory } from "react-router-dom";
 import * as actions from "../../redux/actions/orderAction";
 import { connect } from "react-redux";
-import Comment from "../Comment";
 import { API, HOST } from "../../config";
 import Rating from "@material-ui/lab/Rating";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import { useSnackbar } from "notistack";
 
 const MovieDetial = (props) => {
@@ -149,17 +146,7 @@ const MovieDetial = (props) => {
 							backgroundSize: "cover",
 							backgroundRepeat: "no-repeat",
 						}}
-					>
-						<div className={css.Comment}>
-							{commentShow && <Comment movieId={movieId} />}
-						</div>
-						<button
-							className={css.ShowComment}
-							onClick={() => setcommentShow(!commentShow)}
-						>
-							{commentShow ? "Хаах " : "Сэтгэгдэл харах "}
-						</button>
-					</div>
+					></div>
 				</div>
 				<div className={css.Right}>
 					<div className={css.Title}>
@@ -170,6 +157,7 @@ const MovieDetial = (props) => {
 						<span>{createdDate}</span>
 						<span>{duration} мин</span>
 						<span>{movAuthor}</span>
+
 						<span style={{ color: "orange" }}>
 							{!movie.loading && movieRating}
 						</span>
@@ -182,13 +170,8 @@ const MovieDetial = (props) => {
 							})}
 					</div>
 					<div className={css.RateInfo}>
-						{props.userId
-							? rated
-								? "Та үнэлгээ өгсөн байна"
-								: "Үнэлгээ өгнө үү"
-							: ""}
+						{props.userId ? (rated ? "" : "Үнэлгээ өгнө үү") : ""}
 					</div>
-
 					{!movie.loading && (
 						<Rating
 							name="customized-10"
@@ -199,6 +182,7 @@ const MovieDetial = (props) => {
 							onChange={(e) => sendRating(e)}
 						/>
 					)}
+
 					<div className={css.Description}>
 						<span>
 							<span style={{ color: "black" }}>Тайлбар: </span>

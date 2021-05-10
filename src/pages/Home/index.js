@@ -8,7 +8,16 @@ import Slider from "react-slick";
 // Import css files
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+function SampleNextArrow(props) {
+	const { className, style, onClick } = props;
+	return (
+		<div
+			className={className}
+			style={{ ...style, display: "none", background: "red" }}
+			onClick={onClick}
+		/>
+	);
+}
 const Home = (props) => {
 	const [data1, setData1] = useState({
 		loading: false,
@@ -30,6 +39,7 @@ const Home = (props) => {
 		slidesToShow: 3,
 		slidesToScroll: 1,
 		centerPadding: "100px",
+		nextArrow: <SampleNextArrow />,
 		appendDots: (dots) => (
 			<div
 				style={{
@@ -57,7 +67,7 @@ const Home = (props) => {
 		),
 	};
 
-	const [settings, setSettings] = useState(config);
+	const [settings] = useState(config);
 	useEffect(() => {
 		setData1((prevState) => {
 			return { ...prevState, loading: true };

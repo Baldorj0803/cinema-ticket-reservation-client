@@ -3,20 +3,21 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	box-sizing: border-box;
 }
 .Ticket > span {
 	font-size: 30px;
-	margin: 50px;
+	margin: 80px;
 }
 
 .Ticket > div {
 	width: 400px;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
 }
 .loading {
 	font-family: "Menlo", monospace;
+	justify-content: center;
 }
 
 .loading::after {
@@ -37,4 +38,15 @@
 	100% {
 		width: 3ch;
 	}
+}
+
+.Timer {
+	position: absolute;
+	font-size: 14px;
+	margin: 10px;
+}
+
+.Footer {
+	margin-top: 80px;
+	justify-content: space-around;
 }

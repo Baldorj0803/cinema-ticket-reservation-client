@@ -9,17 +9,15 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import UpdateIcon from "@material-ui/icons/Update";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import MyModal from "../MyModal";
 import { API } from "../../config";
+import CreateIcon from "@material-ui/icons/Create";
 
 const Movie = () => {
 	const { enqueueSnackbar } = useSnackbar();
 	const [movies, setMovies] = useState([]);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
 	const [pagination, setPagination] = useState({
 		nextPage: null,
 		prevPage: null,
@@ -27,17 +25,15 @@ const Movie = () => {
 	});
 	const [page, setPage] = useState(1);
 	const loadMovies = () => {
-		setLoading(true);
 		axios
 			.get(`${API}/movies?limit=10&sort=movName&page=${page}`)
 			.then((res) => {
-				setLoading(false);
+				console.log(res.data);
 				setMovies(res.data.data);
 				setPagination(res.data.pagination);
 			})
 			.catch((err) => {
-				setLoading(false);
-				setError(err.response.data.error);
+				enqueueSnackbar(err.response.data.error, { variant: "error" });
 			});
 	};
 	useEffect(() => {
@@ -77,7 +73,13 @@ const Movie = () => {
 	const handleClose = () => {
 		setOpen(false);
 	};
-
+	const averageRate = (value, count) => {
+		if (value < 1 || count < 1) {
+			return 0;
+		} else {
+			return Number.parseFloat(value / count).toFixed(1);
+		}
+	};
 	return (
 		<div className={css.Movie}>
 			<div className={css.Header}>
@@ -102,6 +104,8 @@ const Movie = () => {
 								<TableCell align="center">Үүссэн он</TableCell>
 								<TableCell align="center">Үргэлжлэх хугацаа</TableCell>
 								<TableCell align="center">Насаны хязгаар</TableCell>
+								<TableCell align="center">Үнэлгээ</TableCell>
+								<TableCell align="center">Хуваарийн тоо</TableCell>
 								<TableCell align="center">Зураг</TableCell>
 								<TableCell align="center"></TableCell>
 								<TableCell align="center"></TableCell>
@@ -131,6 +135,12 @@ const Movie = () => {
 										<TableCell align="center">{movie.duration} мин</TableCell>
 										<TableCell align="center">{movie.ageLimit} </TableCell>
 										<TableCell align="center">
+											{averageRate(movie.rateValue, movie.rateCount)}
+										</TableCell>
+										<TableCell align="center">
+											{movie.schedules.length}
+										</TableCell>
+										<TableCell align="center">
 											<a
 												href={`http://localhost:8000/static/upload/${movie.photo}`}
 												target="_blank"
@@ -143,7 +153,7 @@ const Movie = () => {
 												style={{ height: "10px", cursor: "pointer" }}
 												onClick={() => handleMethod("PUT", movie)}
 											>
-												<UpdateIcon fontSize="small" />
+												<CreateIcon fontSize="small" htmlColor="blue" />
 											</div>
 										</TableCell>
 										<TableCell align="center">
@@ -151,7 +161,7 @@ const Movie = () => {
 												onClick={() => deleteItem(movie._id)}
 												style={{ height: "10px", cursor: "pointer" }}
 											>
-												<DeleteOutlineIcon fontSize="small" />
+												<DeleteOutlineIcon fontSize="small" htmlColor="red" />
 											</div>
 										</TableCell>
 									</TableRow>
@@ -162,6 +172,13 @@ const Movie = () => {
 				</TableContainer>
 			</div>
 			<div className={css.Footer}>
+				{pagination.prevPage ? (
+					<div>Хуудас {pagination.prevPage + 1}</div>
+				) : pagination.nextPage ? (
+					<div>Хуудас {pagination.nextPage - 1}</div>
+				) : (
+					""
+				)}
 				{pagination.prevPage && (
 					<button onClick={() => setPage((prevPage) => prevPage - 1)}>
 						Өмнөх

@@ -13,8 +13,10 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 const HomeDashboard = () => {
 	const { enqueueSnackbar } = useSnackbar();
 	const [data, setdata] = useState([]);
+	const [loading, setloading] = useState(false);
 
 	useEffect(() => {
+		setloading(true);
 		let token = localStorage.getItem("t");
 		axios
 			.get(`${API}/statistic/admin`, {
@@ -23,10 +25,11 @@ const HomeDashboard = () => {
 				},
 			})
 			.then((res) => {
-				console.log(res.data.data);
+				setloading(false);
 				setdata(res.data.data);
 			})
 			.catch((err) => {
+				setloading(false);
 				enqueueSnackbar("Алдаа гарлаа" + err.response.data.error, {
 					variant: "error",
 				});
@@ -43,7 +46,11 @@ const HomeDashboard = () => {
 						</div>
 						<div className={css.info}>
 							<p>Нийт салбар</p>
-							<span>{data["totalBranch"]}</span>
+							{loading ? (
+								<div className={css.load} />
+							) : (
+								<span>{data["totalBranch"]}</span>
+							)}
 						</div>
 					</div>
 					<div className={css.Footer}>
@@ -58,7 +65,11 @@ const HomeDashboard = () => {
 						</div>
 						<div className={css.info}>
 							<p>Нийт танхим</p>
-							<span>{data["totalHall"]}</span>
+							{loading ? (
+								<div className={css.load} />
+							) : (
+								<span>{data["totalHall"]}</span>
+							)}
 						</div>
 					</div>
 					<div className={css.Footer}>
@@ -73,7 +84,11 @@ const HomeDashboard = () => {
 						</div>
 						<div className={css.info}>
 							<p>Нийт Ажилтан</p>
-							<span>{data["totalStaff"]}</span>
+							{loading ? (
+								<div className={css.load} />
+							) : (
+								<span>{data["totalStaff"]}</span>
+							)}
 						</div>
 					</div>
 					<div className={css.Footer}>
@@ -89,7 +104,11 @@ const HomeDashboard = () => {
 						</div>
 						<div className={css.info}>
 							<p>Нийт кино</p>
-							<span>{data["totalMovie"]}</span>
+							{loading ? (
+								<div className={css.load} />
+							) : (
+								<span>{data["totalMovie"]}</span>
+							)}
 						</div>
 					</div>
 					<div className={css.Footer}>
@@ -108,7 +127,11 @@ const HomeDashboard = () => {
 							<span>Хуваарь</span>
 						</div>
 						<div className={css.Value}>
-							<span>{data["totalSchedule"]}</span>
+							{loading ? (
+								<div className={css.load} />
+							) : (
+								<span>{data["totalSchedule"]}</span>
+							)}
 						</div>
 					</div>
 					<div className={css.Item2} style={{ backgroundColor: "#28B30F" }}>
@@ -119,7 +142,11 @@ const HomeDashboard = () => {
 							<span>Хэрэглэгчид</span>
 						</div>
 						<div className={css.Value}>
-							<span>{data["totalUser"]}</span>
+							{loading ? (
+								<div className={css.load} />
+							) : (
+								<span>{data["totalUser"]}</span>
+							)}
 						</div>
 					</div>
 				</div>
@@ -133,7 +160,11 @@ const HomeDashboard = () => {
 							<span>Захиалгын тоо</span>
 						</div>
 						<div className={css.Value}>
-							<span>{data["totalOrder"]}</span>
+							{loading ? (
+								<div className={css.load} />
+							) : (
+								<span>{data["totalOrder"]}</span>
+							)}
 						</div>
 					</div>
 					<div className={css.Item2} style={{ backgroundColor: "#FF542E" }}>
@@ -144,7 +175,11 @@ const HomeDashboard = () => {
 							<span>Захиалгын үнэ</span>
 						</div>
 						<div className={css.Value}>
-							<span>{data["totalPrice"]}₮</span>
+							{loading ? (
+								<div className={css.load} />
+							) : (
+								<span>{data["totalPrice"]}</span>
+							)}
 						</div>
 					</div>
 				</div>

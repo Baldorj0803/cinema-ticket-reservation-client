@@ -9,7 +9,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import UpdateIcon from "@material-ui/icons/Update";
+import CreateIcon from "@material-ui/icons/Create";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import MyModal from "../MyModal";
@@ -103,6 +103,7 @@ const Schedule = () => {
 								<TableCell align="center">Дуусах хугацаа</TableCell>
 								<TableCell align="center">Үнэ /том хүн/</TableCell>
 								<TableCell align="center">Салбар </TableCell>
+								<TableCell align="center">Захиалгын тоо </TableCell>
 								<TableCell align="center">Ажилтан</TableCell>
 								<TableCell align="center"></TableCell>
 								<TableCell align="center"></TableCell>
@@ -131,6 +132,9 @@ const Schedule = () => {
 										</TableCell>
 										<TableCell align="center">{schedule.branch}</TableCell>
 										<TableCell align="center">
+											{schedule.orders.length}
+										</TableCell>
+										<TableCell align="center">
 											{schedule.staffId !== null ? schedule.staffId.fName : " "}
 										</TableCell>
 										<TableCell align="right">
@@ -138,7 +142,7 @@ const Schedule = () => {
 												style={{ height: "10px", cursor: "pointer" }}
 												onClick={() => handleMethod("PUT", schedule)}
 											>
-												<UpdateIcon fontSize="small" />
+												<CreateIcon fontSize="small" htmlColor="blue" />
 											</div>
 										</TableCell>
 										<TableCell align="right">
@@ -146,7 +150,7 @@ const Schedule = () => {
 												onClick={() => deleteItem(schedule._id)}
 												style={{ height: "10px", cursor: "pointer" }}
 											>
-												<DeleteOutlineIcon fontSize="small" />
+												<DeleteOutlineIcon fontSize="small" htmlColor="red" />
 											</div>
 										</TableCell>
 									</TableRow>
@@ -157,6 +161,13 @@ const Schedule = () => {
 				</TableContainer>
 			</div>
 			<div className={css.Footer}>
+				{pagination.prevPage ? (
+					<div>Хуудас {pagination.prevPage + 1}</div>
+				) : pagination.nextPage ? (
+					<div>Хуудас {pagination.nextPage - 1}</div>
+				) : (
+					""
+				)}
 				{pagination.prevPage && (
 					<button onClick={() => setPage((prevPage) => prevPage - 1)}>
 						Өмнөх

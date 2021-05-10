@@ -27,6 +27,7 @@ const MyOrder = () => {
 				console.log(err.response.data.error);
 			});
 	}, []);
+
 	return (
 		<div className={css.MyOrder}>
 			<TableContainer component={Paper}>
@@ -46,6 +47,7 @@ const MyOrder = () => {
 					<TableBody>
 						{orders.length > 0 ? (
 							orders.map((order) => {
+								let d = new Date(order.date);
 								let sit = "";
 								order.seats.forEach((e) => {
 									sit = sit + e.row + "-" + e.column + " ";
@@ -69,7 +71,7 @@ const MyOrder = () => {
 											{order.scheduleId === null ? "" : order.scheduleId.branch}
 										</TableCell>
 										<TableCell align="center">
-											{order.date.slice(5, 16).replace("T", " ")}
+											{d.toString().slice(0, 21)}
 										</TableCell>
 										<TableCell align="right">{sit}</TableCell>
 									</TableRow>

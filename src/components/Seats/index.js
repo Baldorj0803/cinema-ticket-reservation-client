@@ -27,7 +27,6 @@ const Seats = (props) => {
 			enqueueSnackbar("Суудлаа гүйцэт сонгоно уу", { variant: "warning" });
 		} else {
 			let token = localStorage.getItem("t");
-			setloading(true);
 			axios
 				.post(
 					`${API}/orders`,
@@ -44,13 +43,13 @@ const Seats = (props) => {
 					}
 				)
 				.then((res) => {
+					let d = new Date(res.data.data.date);
+					props.addticketEndTime(d);
 					props.addOrderId(res.data.data._id);
-					setloading(false);
 					enqueueSnackbar("Амжилттай Сонгогдлоо", { variant: "success" });
 					props.changePage(3);
 				})
 				.catch((err) => {
-					setloading(false);
 					loadOrder();
 				});
 		}
@@ -87,8 +86,10 @@ const Seats = (props) => {
 						duplicate = duplicate + order.row + "-" + order.column + " ";
 						++idx;
 					}
+					return;
 				});
 				if (idx === 0) notDuplicate.push(seat);
+				return;
 			});
 			setSeats([...notDuplicate]);
 			if (duplicate !== "")
@@ -106,12 +107,10 @@ const Seats = (props) => {
 		})
 			.then((res) => {
 				let orderdCall = [];
-				{
-					res.data.data.orders.length > 0 &&
-						res.data.data.orders.map((order) =>
-							orderdCall.push(...order.seats)
-						);
-				}
+
+				res.data.data.orders.length > 0 &&
+					res.data.data.orders.map((order) => orderdCall.push(...order.seats));
+
 				//herew vldsen suudal zahailah suudlaas baga baiwal zahialga tsutslagdana
 				if (row * column - orderdCall.length < totalSeat) {
 					props.handleTotalPrice(0, 0);
@@ -166,9 +165,14 @@ const Seats = (props) => {
 													className={val}
 													value={val}
 													disabled={disable}
-													style={{ backgroundColor: color }}
+													style={{
+														backgroundColor: color,
+														height: row > 20 || column > 20 ? "10px" : "18px",
+														width: row > 20 || column > 20 ? "10px" : "18px",
+														margin: row > 20 || column > 20 ? "2px" : "5px",
+													}}
 													onClick={handleS}
-												/>
+												></button>
 											);
 										}
 										let k = <div key={i}>{c}</div>;
@@ -265,6 +269,7 @@ const mapDispatchToProps = (dispatch) => {
 		handleTotalPrice: (childSeat, adultSeat) =>
 			dispatch(actions.handleTotalPrice(childSeat, adultSeat)),
 		addOrderId: (orderId) => dispatch(actions.addOrderId(orderId)),
+		addticketEndTime: (date) => dispatch(actions.addticketEndTime(date)),
 	};
 };
 

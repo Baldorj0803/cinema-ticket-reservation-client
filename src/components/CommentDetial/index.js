@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import css from "./style.module.css";
-import axios from "axios";
+
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
@@ -31,7 +31,6 @@ const CommentDetial = (props) => {
 	const person = props.you;
 	const commentId = props.data._id;
 	let hh, mm, ss, dd;
-	const [display, setdisplay] = useState(false);
 
 	if (date) {
 		let d = new Date(date);

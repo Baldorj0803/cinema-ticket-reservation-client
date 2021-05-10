@@ -8,7 +8,6 @@ import { API } from "../../config";
 const Comingsoon = () => {
 	const [page, setPage] = useState(1);
 	const [item, setItem] = useState([]);
-	const [categories, setCategories] = useState([]);
 	const [data, setData] = useState({
 		loading: false,
 		error: "",
@@ -40,18 +39,6 @@ const Comingsoon = () => {
 				});
 			});
 	};
-	const loadCategories = () => {
-		axios({
-			method: "get",
-			url: `${API}/categories`,
-		})
-			.then((res) => {
-				setCategories(res.data.data);
-			})
-			.catch((err) => {
-				alert(err.response.data.error);
-			});
-	};
 
 	useEffect(() => {
 		setData((prevState) => {
@@ -60,7 +47,6 @@ const Comingsoon = () => {
 				loading: true,
 			};
 		});
-		loadCategories();
 		loadMovies();
 	}, [page]);
 

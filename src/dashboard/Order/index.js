@@ -9,11 +9,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import axios from "axios";
 import { API } from "../../config";
-
+import { useSnackbar } from "notistack";
 const Order = () => {
 	const [orders, setOrders] = useState([]);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
+	const { enqueueSnackbar } = useSnackbar();
 	const [pagination, setPagination] = useState({
 		nextPage: null,
 		prevPage: null,
@@ -21,7 +20,6 @@ const Order = () => {
 	});
 	const [page, setPage] = useState(1);
 	const loadOrders = () => {
-		setLoading(true);
 		let token = localStorage.getItem("t");
 		axios
 			.get(`${API}/orders?limit=10&page=${page}`, {
@@ -30,14 +28,11 @@ const Order = () => {
 				},
 			})
 			.then((res) => {
-				console.log(res.data.data);
-				setLoading(false);
 				setOrders(res.data.data);
 				setPagination(res.data.pagination);
 			})
 			.catch((err) => {
-				setLoading(false);
-				setError(err.response.data.error);
+				enqueueSnackbar(err.response.data.error, { variant: "error" });
 			});
 	};
 	useEffect(() => {
@@ -91,6 +86,13 @@ const Order = () => {
 				</TableContainer>
 			</div>
 			<div className={css.Footer}>
+				{pagination.prevPage ? (
+					<div>Хуудас {pagination.prevPage + 1}</div>
+				) : pagination.nextPage ? (
+					<div>Хуудас {pagination.nextPage - 1}</div>
+				) : (
+					""
+				)}
 				{pagination.prevPage && (
 					<button onClick={() => setPage((prevPage) => prevPage - 1)}>
 						Өмнөх

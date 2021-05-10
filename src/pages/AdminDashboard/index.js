@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import css from "./style.module.css";
-import Movie from "../../dashboard/Movie";
-import Schedule from "../../dashboard/Schedule";
-import Order from "../../dashboard/Order";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 import PeopleIcon from "@material-ui/icons/People";

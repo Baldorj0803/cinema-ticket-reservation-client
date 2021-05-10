@@ -71,3 +71,9 @@ export const addOrderId = (orderId) => {
 		orderId,
 	};
 };
+export const addticketEndTime = (ticketEndTime) => {
+	return {
+		type: "TICKET_END_TIME",
+		ticketEndTime,
+	};
+};

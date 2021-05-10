@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component } from "react";
 import css from "./style.module.css";
 import * as actions from "../../redux/actions/orderAction";
 import { connect } from "react-redux";
@@ -7,17 +7,19 @@ import { API } from "../../config";
 import Button from "@material-ui/core/Button";
 import { withSnackbar } from "notistack";
 import { withRouter } from "react-router-dom";
-
+import Alert from "@material-ui/lab/Alert";
 class Ticket extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { time: { m: " ", s: " " }, seconds: 60 * 10 };
+		let a = (new Date(this.props.ticketEndTime) - new Date()) / 1000;
+		this.state = { time: { m: " ", s: " " }, seconds: a };
 		this.timer = 0;
 		this.success = false;
 		this.countDown = this.countDown.bind(this);
 		this.handleTicket = this.handleTicket.bind(this);
 		this.loading = false;
 	}
+
 	secondsToTime(secs) {
 		let divisor_for_minutes = secs % (60 * 60);
 		let minutes = Math.floor(divisor_for_minutes / 60);
@@ -33,8 +35,8 @@ class Ticket extends Component {
 	}
 
 	componentDidMount() {
-		this.state.success = false;
-		if (this.timer == 0 && this.state.seconds > 0) {
+		this.setState({ success: false });
+		if (this.timer === 0 && this.state.seconds > 0) {
 			this.timer = setInterval(this.countDown, 1000);
 		}
 	}
@@ -45,15 +47,17 @@ class Ticket extends Component {
 			seconds: seconds,
 		});
 
-		if (seconds == 0) {
+		if (seconds <= 1) {
 			clearInterval(this.timer);
 			this.props.enqueueSnackbar("Хугацаа дууссан тул захиалга цуцлагдлаа", {
 				variant: "warning",
 			});
+			this.props.changePage(1);
 		}
 	}
 
 	componentWillUnmount() {
+		this.props.addticketEndTime(null);
 		if (!this.state.success) {
 			this.props.enqueueSnackbar("Захиалга цуцлагдлаа", {
 				variant: "warning",
@@ -108,39 +112,45 @@ class Ticket extends Component {
 	}
 
 	render() {
-		const { history } = this.props;
-		return (
-			<div className={css.Ticket}>
-				{this.props.totalPrice && (
-					<span>Төлөх дүн:{this.props.totalPrice}</span>
-				)}
-				{this.state.loading ? (
-					<div className={css.loading}>Захиалж байна</div>
-				) : (
-					<>
-						<span>{`${this.state.time.m} : ${this.state.time.s}`}</span>
-					</>
-				)}
+		let ddd = new Date(this.props.ticketEndTime);
 
-				<div>
-					<Button
-						variant="contained"
-						variant="contained"
-						color="inherit"
-						onClick={() => this.props.changePage(1)}
-					>
-						Цуцлах
-					</Button>
-					<Button
-						variant="contained"
-						variant="contained"
-						color="primary"
-						onClick={this.handleTicket}
-					>
-						Төлбөр төлөх
-					</Button>
+		return (
+			<>
+				<span className={css.Timer}>
+					{`${this.state.time.m} : ${this.state.time.s}`}
+				</span>
+				<div className={css.Ticket}>
+					{this.props.totalPrice && (
+						<span>Төлөх дүн:{this.props.totalPrice}</span>
+					)}
+
+					{this.state.loading ? (
+						<div className={css.loading}>Захиалж байна</div>
+					) : (
+						<>
+							<Alert severity="warning">
+								Та {ddd.toString().slice(16, 25)} цагаас өмнө төлбөрөө төлнө үү
+							</Alert>
+						</>
+					)}
+					<div className={css.Footer}>
+						<Button
+							variant="contained"
+							color="inherit"
+							onClick={() => this.props.changePage(1)}
+						>
+							Цуцлах
+						</Button>
+						<Button
+							variant="contained"
+							color="primary"
+							onClick={this.handleTicket}
+						>
+							Төлбөр төлөх
+						</Button>
+					</div>
 				</div>
-			</div>
+			</>
 		);
 	}
 }
@@ -150,12 +160,14 @@ const mapStateToProps = (state) => {
 		orderId: state.orderReducer.orderId,
 		scheduleId: state.orderReducer.scheduleId,
 		totalPrice: state.orderReducer.totalPrice,
+		ticketEndTime: state.orderReducer.ticketEndTime,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changePage: (page) => dispatch(actions.changePage(page)),
+		addticketEndTime: (date) => dispatch(actions.addticketEndTime(date)),
 	};
 };
 

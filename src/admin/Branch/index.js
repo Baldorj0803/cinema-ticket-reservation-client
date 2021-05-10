@@ -1,4 +1,3 @@
-import { Button } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import css from "./style.module.css";
 import Paper from "@material-ui/core/Paper";
@@ -19,8 +18,6 @@ import AddIcon from "@material-ui/icons/Add";
 const Branch = () => {
 	const { enqueueSnackbar } = useSnackbar();
 	const [branches, setBranches] = useState([]);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
 	const [pagination, setPagination] = useState({
 		nextPage: null,
 		prevPage: null,
@@ -28,17 +25,14 @@ const Branch = () => {
 	});
 	const [page, setPage] = useState(1);
 	const loadBranches = () => {
-		setLoading(true);
 		axios
 			.get(`${API}/branches`)
 			.then((res) => {
-				setLoading(false);
 				setBranches(res.data.data);
 				setPagination(res.data.pagination);
 			})
 			.catch((err) => {
-				setLoading(false);
-				setError(err.response.data.error);
+				enqueueSnackbar(err.response.data.error, { variant: "error" });
 			});
 	};
 	useEffect(() => {

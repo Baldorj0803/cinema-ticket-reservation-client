@@ -9,6 +9,7 @@ const initialState = {
 	childSeat: 0,
 	adultSeat: 0,
 	orderId: null,
+	ticketEndTime: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -43,12 +44,6 @@ const reducer = (state = initialState, action) => {
 				...state,
 				loading: false,
 				schedule: action.schedule,
-				// movie: action.schedule.movieId,
-				// priceAdults: action.schedule.priceAdults,
-				// priceChild: action.schedule.priceChild,
-				// row: action.schedule.hallId.row,
-				// column: action.schedule.hallId.column,
-				// ordered: action.schedule.orders,
 			};
 		case "LOAD_SCHEDULE_ERROR":
 			return {
@@ -78,6 +73,11 @@ const reducer = (state = initialState, action) => {
 		case "CLEAN_STATE":
 			return {
 				...initialState,
+			};
+		case "TICKET_END_TIME":
+			return {
+				...state,
+				ticketEndTime: action.ticketEndTime,
 			};
 		default:
 			return state;

@@ -10,7 +10,7 @@ import { HOST, API } from "../../config";
 import axios from "axios";
 
 const SeatCount = (props) => {
-	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+	const { enqueueSnackbar } = useSnackbar();
 
 	const [remainSeats, setRemainSeats] = useState(0);
 	const [loading, setloading] = useState("");
@@ -31,10 +31,10 @@ const SeatCount = (props) => {
 		})
 			.then((res) => {
 				let orderCall = [];
-				{
-					res.data.data.orders.length > 0 &&
-						res.data.data.orders.map((order) => orderCall.push(...order.seats));
-				}
+
+				res.data.data.orders.length > 0 &&
+					res.data.data.orders.map((order) => orderCall.push(...order.seats));
+
 				setRemainSeats(totalSeat - orderCall.length);
 				setloading(false);
 			})
