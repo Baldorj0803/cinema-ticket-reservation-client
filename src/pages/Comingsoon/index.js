@@ -8,19 +8,30 @@ import { API } from "../../config";
 const Comingsoon = () => {
 	const [page, setPage] = useState(1);
 	const [item, setItem] = useState([]);
+	const [month, setMonth] = useState(0);
 	const [data, setData] = useState({
 		loading: false,
 		error: "",
 		pagination: "",
 	});
 
-	const loadMovies = () => {
+	const loadMovies = (m) => {
+		let query = `${API}/movies/coming-soon?`;
+		if (m !== null && m !== 0) {
+			query = query + `limit=10&page=1&month=${month}`;
+		} else {
+			query = query + `limit=4&page=${page}`;
+		}
 		axios({
 			method: "get",
-			url: `${API}/movies/coming-soon?limit=4&page=${page}`,
+			url: query,
 		})
 			.then((res) => {
-				setItem([...item, ...res.data.data]);
+				if (m !== null || page === 1) {
+					setItem([...res.data.data]);
+				} else {
+					setItem([...item, ...res.data.data]);
+				}
 				setData((prevState) => {
 					return {
 						...prevState,
@@ -47,15 +58,54 @@ const Comingsoon = () => {
 				loading: true,
 			};
 		});
-		loadMovies();
+		loadMovies(null);
 	}, [page]);
 
+	useEffect(() => {
+		loadMovies(month);
+	}, [month]);
+
+	const category = () => {
+		let month = new Date().getMonth() + 1;
+		var rows = [];
+		for (var i = 0; i < 12; i++) {
+			let m = month + i;
+			if (month + i > 12) {
+				m = m - 12;
+			}
+			rows.push(
+				<button
+					className={css.category}
+					key={i}
+					value={m}
+					onClick={() => setMonth(m)}
+				>
+					{m} сар
+				</button>
+			);
+		}
+		return rows;
+	};
 	return (
 		<div className={css.Movie}>
+			<div className={css.Category}>
+				<button
+					className={css.category}
+					onClick={() => {
+						page === 1 ? loadMovies(null) : setPage(1);
+					}}
+				>
+					Бүх
+				</button>
+				{category()}
+			</div>
 			<div>
 				{item.map((movie, i) => {
 					return <Card key={i} movie={movie.movie} />;
 				})}
+				{item.length === 0 && (
+					<span style={{ marginTop: "20px" }}>Үр дүн олдсонгүй</span>
+				)}
 			</div>
 			<div>{data.loading && <Spinner />}</div>
 

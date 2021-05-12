@@ -7,7 +7,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	padding-top: 80px;
+	padding-top: 100px;
 	min-height: 100vh;
 }
 
@@ -21,4 +21,40 @@
 .Movie > button {
 	width: 80px;
 	margin: 0 auto;
+}
+.category {
+	padding: 10px 20px;
+	margin: 0 5px;
+	font-family: "Roboto", sans-serif;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 2.5px;
+	font-weight: 500;
+	color: white;
+	background-color: rgb(0, 94, 201);
+	border: none;
+	border-radius: 45px;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease 0s;
+	cursor: pointer;
+	outline: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 12px;
+}
+.category:hover {
+	background-color: #12c6d3;
+	box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+	color: #fff;
+	transform: translateY(-7px);
+}
+
+.Category {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+	width: 100%;
 }

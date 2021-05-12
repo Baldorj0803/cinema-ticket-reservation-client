@@ -49,11 +49,11 @@ const Movie = () => {
 				},
 			})
 			.then((res) => {
-				loadMovies();
 				enqueueSnackbar("Амжилттай устгалаа", { variant: "success" });
+				loadMovies();
 			})
 			.catch((err) => {
-				console.log(err.response.data.error);
+				enqueueSnackbar(err.response.data.error, { variant: "error" });
 			});
 	};
 	const [open, setOpen] = useState(false);

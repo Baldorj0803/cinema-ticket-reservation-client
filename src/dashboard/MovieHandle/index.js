@@ -24,7 +24,7 @@ const AddMovie = (props) => {
 				setCategories(res.data.data);
 			})
 			.catch((err) => {
-				console.log(err.response.data.error);
+				props.alert(err.response.data.error, { variant: "error" });
 			});
 	}, []);
 

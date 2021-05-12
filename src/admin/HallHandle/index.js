@@ -26,7 +26,6 @@ const HallHandle = (props) => {
 	}, []);
 
 	const handleChange = (name) => (event) => {
-		form.formData.set(name, event.target.value);
 		setForm({ ...form, [name]: event.target.value });
 	};
 

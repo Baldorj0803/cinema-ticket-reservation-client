@@ -58,6 +58,9 @@
 	display: flex;
 	align-items: center;
 }
+.Footer button {
+	font-size: 16px;
+}
 .Link:hover {
 	border-radius: 0px;
 }

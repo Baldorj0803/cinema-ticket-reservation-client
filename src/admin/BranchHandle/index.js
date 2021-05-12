@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import css from "./style.module.css";
 import axios from "axios";
 import { API } from "../../config";
@@ -12,9 +12,11 @@ const BranchHandle = (props) => {
 	});
 
 	const handleChange = (name) => (event) => {
-		form.formData.set(name, event.target.value);
 		setForm({ ...form, [name]: event.target.value });
 	};
+	useEffect(() => {
+		setForm({ ...form, formData: new FormData(), ...props.branch });
+	}, []);
 
 	const handleSumbit = (e) => {
 		e.preventDefault();
