@@ -10,7 +10,10 @@ const BranchHandle = (props) => {
 		branchAddress: "",
 		branchPhoneNumber: "",
 		formData: "",
-	});
+	});  
+	
+	
+	
 
 	const handleChange = (name) => (event) => {
 		setForm({ ...form, [name]: event.target.value });
